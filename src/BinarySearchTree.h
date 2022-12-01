@@ -5,29 +5,29 @@
 #include "Tree.h"
 using namespace std;
 
-typedef struct Node {
+typedef struct BinarySearchNode {
     int data;
-    Node* left;
-    Node* right;
-} Node;
+    BinarySearchNode* left;
+    BinarySearchNode* right;
+} BinarySearchNode;
 
-class BinarySearchTree : public Tree<Node> {
+class BinarySearchTree : public Tree<BinarySearchNode> {
     private:
-        Node* makeNode(int data, Node* left, Node* right);
+        BinarySearchNode* makeBinarySearchNode(int data, BinarySearchNode* left, BinarySearchNode* right);
 
-        bool isValidHelper(Node* curr);
+        bool isValidHelper(BinarySearchNode* curr);
 
         // recursive basic functions
-        Node* insertHelper(Node* curr, int data);
-        Node* removeHelper(Node* curr, int data);
-        Node* find(Node* curr, int data);
-        Node* purgeHelper(Node* curr);
+        BinarySearchNode* insertHelper(BinarySearchNode* curr, int data);
+        BinarySearchNode* removeHelper(BinarySearchNode* curr, int data);
+        BinarySearchNode* find(BinarySearchNode* curr, int data);
+        BinarySearchNode* purgeHelper(BinarySearchNode* curr);
 
         // recursive helper functions
-        Node* getMinHelper(Node* curr);
-        Node* getMaxHelper(Node* curr);
-        int getHeightHelper(Node* curr);
-        void inorder(Node* curr, int* &arr, int &i);
+        BinarySearchNode* getMinHelper(BinarySearchNode* curr);
+        BinarySearchNode* getMaxHelper(BinarySearchNode* curr);
+        int getHeightHelper(BinarySearchNode* curr);
+        void inorder(BinarySearchNode* curr, int* &arr, int &i);
 
     public:
         ~BinarySearchTree();

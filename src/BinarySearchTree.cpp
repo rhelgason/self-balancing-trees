@@ -1,15 +1,15 @@
 #include "BinarySearchTree.h"
 
 /* PRIVATE FUNCTIONS */
-Node* BinarySearchTree::makeNode(int data, Node* left, Node* right) {
-    Node* temp = new Node;
+BinarySearchNode* BinarySearchTree::makeBinarySearchNode(int data, BinarySearchNode* left, BinarySearchNode* right) {
+    BinarySearchNode* temp = new BinarySearchNode;
     temp->data = data;
     temp->left = left;
     temp->right = right;
     return temp;
 }
 
-bool BinarySearchTree::isValidHelper(Node* curr) {
+bool BinarySearchTree::isValidHelper(BinarySearchNode* curr) {
     int* arr = new int[size];
     int i = 0;
     inorder(root, arr, i);
@@ -18,10 +18,10 @@ bool BinarySearchTree::isValidHelper(Node* curr) {
     return valid;
 }
 
-Node* BinarySearchTree::insertHelper(Node* curr, int data) {
+BinarySearchNode* BinarySearchTree::insertHelper(BinarySearchNode* curr, int data) {
     if (curr == NULL) {
         size += 1;
-        return makeNode(data, NULL, NULL);
+        return makeBinarySearchNode(data, NULL, NULL);
     }
 
     if (data < curr->data) {
@@ -33,7 +33,7 @@ Node* BinarySearchTree::insertHelper(Node* curr, int data) {
     return curr;
 }
 
-Node* BinarySearchTree::removeHelper(Node* curr, int data) {
+BinarySearchNode* BinarySearchTree::removeHelper(BinarySearchNode* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
@@ -47,27 +47,21 @@ Node* BinarySearchTree::removeHelper(Node* curr, int data) {
     }
 
     // one child or no children
-    if (curr->left == NULL) {
-        Node* temp = curr->right;
-        delete curr;
-        size -= 1;
-        return temp;
-    } else if (curr->right == NULL) {
-        Node *temp = curr->left;
+    if (curr->left == NULL || curr->right == NULL) {
+        BinarySearchNode* temp = curr->left == NULL ? curr->right : curr->left;
         delete curr;
         size -= 1;
         return temp;
     }
 
-    // two children
-    // get inorder successor
-    Node* temp = getMinHelper(curr->right);
+    // two children, get inorder successor
+    BinarySearchNode* temp = getMinHelper(curr->right);
     curr->data = temp->data;
     curr->right = removeHelper(curr->right, temp->data);
     return curr;
 }
 
-Node* BinarySearchTree::find(Node* curr, int data) {
+BinarySearchNode* BinarySearchTree::find(BinarySearchNode* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
@@ -81,7 +75,7 @@ Node* BinarySearchTree::find(Node* curr, int data) {
     return curr;
 }
 
-Node* BinarySearchTree::purgeHelper(Node* curr) {
+BinarySearchNode* BinarySearchTree::purgeHelper(BinarySearchNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -93,7 +87,7 @@ Node* BinarySearchTree::purgeHelper(Node* curr) {
     return NULL;
 }
 
-Node* BinarySearchTree::getMinHelper(Node* curr) {
+BinarySearchNode* BinarySearchTree::getMinHelper(BinarySearchNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -104,7 +98,7 @@ Node* BinarySearchTree::getMinHelper(Node* curr) {
     return getMinHelper(curr->left);
 }
 
-Node* BinarySearchTree::getMaxHelper(Node* curr) {
+BinarySearchNode* BinarySearchTree::getMaxHelper(BinarySearchNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -115,7 +109,7 @@ Node* BinarySearchTree::getMaxHelper(Node* curr) {
     return getMaxHelper(curr->right);
 }
 
-int BinarySearchTree::getHeightHelper(Node* curr) {
+int BinarySearchTree::getHeightHelper(BinarySearchNode* curr) {
     if (curr == NULL) {
         return 0;
     }
@@ -123,7 +117,7 @@ int BinarySearchTree::getHeightHelper(Node* curr) {
     return max(getHeightHelper(curr->left), getHeightHelper(curr->right)) + 1;
 }
 
-void BinarySearchTree::inorder(Node* curr, int* &arr, int &i) {
+void BinarySearchTree::inorder(BinarySearchNode* curr, int* &arr, int &i) {
     if (curr == NULL) {
         return;
     }

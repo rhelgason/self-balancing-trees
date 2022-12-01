@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include "BinarySearchTree.h"
+#include "AVLTree.h"
 using namespace std;
 
 template <typename T>
@@ -227,8 +228,33 @@ class BinarySearchTreeTests : public BaseTests<BinarySearchTree> {
         ~BinarySearchTreeTests() {}
 };
 
+template<class T>
+class AVLTreeTests : public BaseTests<AVLTree> {
+    protected:
+        string getName() override {
+            return "AVL Tree";
+        }
+
+        T createTree() override {
+            return AVLTree();
+        }
+
+        void test_tree_specific() override {
+            // MAKE AVL TREE SPECIFIC TREES
+            test_all_left_insertions(7);
+            test_all_right_insertions(7);
+        }
+
+    public:
+        AVLTreeTests() {}
+        ~AVLTreeTests() {}
+};
+
 int main(int argc, char *argv[]) {
     BinarySearchTreeTests<BinarySearchTree> tester1 = BinarySearchTreeTests<BinarySearchTree>();
     tester1.test_all();
+
+    AVLTreeTests<AVLTree> tester2 = AVLTreeTests<AVLTree>();
+    tester2.test_all();
     cout << endl;
 }
