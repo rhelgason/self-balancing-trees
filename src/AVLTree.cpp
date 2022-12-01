@@ -76,23 +76,22 @@ AVLNode* AVLTree::removeHelper(AVLNode* curr, int data) {
     if (data < curr->data) {
         curr->left = removeHelper(curr->left, data);
         updateHeight(curr);
-        return curr;
     } else if (data > curr->data) {
         curr->right = removeHelper(curr->right, data);
         updateHeight(curr);
-        return curr;
     } else {
         if (curr->left == NULL || curr->right == NULL) {
             AVLNode* temp = curr->left == NULL ? curr->right : curr->left;
             if (temp == NULL) {
                 // no children
                 temp = curr;
+                delete temp;
                 curr = NULL;
             } else {
                 // one child
-                *curr = *temp;
+                curr->data = temp->data;
+                delete temp;
             }
-            delete temp;
             size -= 1;
         } else {
             // two children, get inorder successor
