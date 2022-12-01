@@ -8,6 +8,7 @@ class BaseTests {
     protected:
         virtual string getName() = 0;
         virtual T createTree() = 0;
+        virtual void test_tree_specific() = 0;
 
     public:
         void print_current_test(string func) {
@@ -27,8 +28,8 @@ class BaseTests {
             test_both_children_remove();
             test_includes();
             test_purge();
-            test_all_left_insertions();
-            test_all_right_insertions();
+
+            test_tree_specific();
 
             cout << " All " << getName() << " tests complete." << endl;
             cout << "=======================================================" << endl;
@@ -172,7 +173,7 @@ class BaseTests {
             assert(tree.getMax() == NULL);
         }
 
-        void test_all_left_insertions() {
+        void test_all_left_insertions(int height) {
             // repeatedly right insert
             print_current_test(__func__);
             T tree = createTree();
@@ -182,12 +183,12 @@ class BaseTests {
 
             assert(tree.isValid());
             assert(tree.getSize() == 100);
-            assert(tree.getHeight() == 100);
+            assert(tree.getHeight() == height);
             assert(tree.getMin()->data == 0);
             assert(tree.getMax()->data == 99);
         }
 
-        void test_all_right_insertions() {
+        void test_all_right_insertions(int height) {
             // repeatedly right insert
             print_current_test(__func__);
             T tree = createTree();
@@ -197,7 +198,7 @@ class BaseTests {
 
             assert(tree.isValid());
             assert(tree.getSize() == 100);
-            assert(tree.getHeight() == 100);
+            assert(tree.getHeight() == height);
             assert(tree.getMin()->data == 0);
             assert(tree.getMax()->data == 99);
         }
@@ -216,6 +217,11 @@ class BinarySearchTreeTests : public BaseTests<BinarySearchTree> {
             return BinarySearchTree();
         }
 
+        void test_tree_specific() override {
+            test_all_left_insertions(100);
+            test_all_right_insertions(100);
+        }
+
     public:
         BinarySearchTreeTests() {}
         ~BinarySearchTreeTests() {}
@@ -224,4 +230,5 @@ class BinarySearchTreeTests : public BaseTests<BinarySearchTree> {
 int main(int argc, char *argv[]) {
     BinarySearchTreeTests<BinarySearchTree> tester1 = BinarySearchTreeTests<BinarySearchTree>();
     tester1.test_all();
+    cout << endl;
 }
