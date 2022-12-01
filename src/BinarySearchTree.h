@@ -2,6 +2,7 @@
 #define BINARY_SEARCH_TREE_H
 
 #include <iostream>
+#include "Tree.h"
 using namespace std;
 
 typedef struct Node {
@@ -10,40 +11,25 @@ typedef struct Node {
     Node* right;
 } Node;
 
-class BinarySearchTree {
-    Node* makeNode(int data, Node* left, Node* right);
+class BinarySearchTree : public Tree<Node> {
+    private:
+        Node* makeNode(int data, Node* left, Node* right);
 
-    struct Node* root;
-    int size;
+        bool isValidHelper(Node* curr);
 
-    // recursive basic functions
-    Node* insert(Node* curr, int data);
-    Node* remove(Node* curr, int data);
-    Node* find(Node* curr, int data);
-    Node* purge(Node* curr);
+        // recursive basic functions
+        Node* insertHelper(Node* curr, int data);
+        Node* removeHelper(Node* curr, int data);
+        Node* find(Node* curr, int data);
+        Node* purgeHelper(Node* curr);
 
-    // recursive helper functions
-    Node* getMin(Node* curr);
-    Node* getMax(Node* curr);
-    int getHeight(Node* curr);
-    void inorder(Node* curr);
+        // recursive helper functions
+        Node* getMinHelper(Node* curr);
+        Node* getMaxHelper(Node* curr);
+        int getHeightHelper(Node* curr);
+        void inorder(Node* curr, int* &arr, int &i);
 
     public:
-        BinarySearchTree();
-
-        // basic functions
-        void insert(int data);
-        void remove(int data);
-        bool includes(int data);
-        void purge();
-
-        // helper functions
-        int getSize();
-        int getMin();
-        int getMax();
-        int getHeight();
-        void inorder();
-
         ~BinarySearchTree();
 };
 

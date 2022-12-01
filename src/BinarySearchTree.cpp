@@ -9,30 +9,41 @@ Node* BinarySearchTree::makeNode(int data, Node* left, Node* right) {
     return temp;
 }
 
-Node* BinarySearchTree::insert(Node* curr, int data) {
+bool BinarySearchTree::isValidHelper(Node* curr) {
+    int* arr = new int[size];
+    int i = 0;
+    inorder(root, arr, i);
+    bool valid = is_sorted(arr, arr + size);
+    delete[] arr;
+    return valid;
+}
+
+Node* BinarySearchTree::insertHelper(Node* curr, int data) {
     if (curr == NULL) {
         size += 1;
         return makeNode(data, NULL, NULL);
     }
 
     if (data < curr->data) {
-        curr->left = insert(curr->left, data);
+        curr->left = insertHelper(curr->left, data);
     } else if (data > curr->data) {
-        curr->right = insert(curr->right, data);
+        curr->right = insertHelper(curr->right, data);
     }
 
     return curr;
 }
 
-Node* BinarySearchTree::remove(Node* curr, int data) {
+Node* BinarySearchTree::removeHelper(Node* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
 
     if (data < curr->data) {
-        curr->left = remove(curr->left, data);
+        curr->left = removeHelper(curr->left, data);
+        return curr;
     } else if (data > curr->data) {
-        curr->right = remove(curr->right, data);
+        curr->right = removeHelper(curr->right, data);
+        return curr;
     }
 
     // one child or no children
@@ -50,9 +61,9 @@ Node* BinarySearchTree::remove(Node* curr, int data) {
 
     // two children
     // get inorder successor
-    Node* temp = getMin(curr->right);
+    Node* temp = getMinHelper(curr->right);
     curr->data = temp->data;
-    curr->right = remove(curr->right, temp->data);
+    curr->right = removeHelper(curr->right, temp->data);
     return curr;
 }
 
@@ -70,90 +81,55 @@ Node* BinarySearchTree::find(Node* curr, int data) {
     return curr;
 }
 
-Node* BinarySearchTree::purge(Node* curr) {
+Node* BinarySearchTree::purgeHelper(Node* curr) {
     if (curr == NULL) {
         return NULL;
     }
 
-    purge(curr->left);
-    purge(curr->right);
+    purgeHelper(curr->left);
+    purgeHelper(curr->right);
     delete curr;
     size -= 1;
     return NULL;
 }
 
-Node* BinarySearchTree::getMin(Node* curr) {
+Node* BinarySearchTree::getMinHelper(Node* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
     if (curr->left == NULL) {
         return curr;
     }
-    return getMin(curr->left);
+    return getMinHelper(curr->left);
 }
 
-Node* BinarySearchTree::getMax(Node* curr) {
+Node* BinarySearchTree::getMaxHelper(Node* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
     if (curr->right == NULL) {
         return curr;
     }
-    return getMax(curr->right);
+    return getMaxHelper(curr->right);
 }
 
-int BinarySearchTree::getHeight(Node* curr) {
+int BinarySearchTree::getHeightHelper(Node* curr) {
     if (curr == NULL) {
         return 0;
     }
 
-    return max(getHeight(curr->left), getHeight(curr->right)) + 1;
+    return max(getHeightHelper(curr->left), getHeightHelper(curr->right)) + 1;
 }
 
-void BinarySearchTree::inorder(Node* curr) {
+void BinarySearchTree::inorder(Node* curr, int* &arr, int &i) {
     if (curr == NULL) {
         return;
     }
-
-    inorder(curr->left);
-    cout << curr->data << '\n';
-    inorder(curr->right);
-}
-
-/* PUBLIC FUNCTIONS */
-BinarySearchTree::BinarySearchTree() {
-    root = NULL;
-    size = 0;
-}
-
-void BinarySearchTree::insert(int data) {
-    root = insert(root, data);
-}
-
-void BinarySearchTree::remove(int data) {
-    root = remove(root, data);
-}
-
-bool BinarySearchTree::includes(int data) {
-    return find(root, data) != NULL;
-}
-
-void BinarySearchTree::purge() {
-    root = purge(root);
-}
-
-int BinarySearchTree::getSize() {
-    return size;
-}
-
-int BinarySearchTree::getMin() {
-    return getMin(root)->data;
-}
-
-int BinarySearchTree::getMax() {
-    return getMax(root)->data;
-}
-
-int BinarySearchTree::getHeight() {
-    return getHeight(root);
-}
-
-void BinarySearchTree::inorder() {
-    inorder(root);
+    inorder(curr->left, arr, i);
+    arr[i++] = curr->data;
+    inorder(curr->right, arr, i);
 }
 
 BinarySearchTree::~BinarySearchTree() {
