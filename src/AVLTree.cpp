@@ -14,9 +14,9 @@ bool AVLTree::isValidHelper(AVLNode* curr) {
     int* arr = new int[size];
     int i = 0;
     inorder(root, arr, i);
-    bool valid = is_sorted(arr, arr + size);
+    bool sorted = is_sorted(arr, arr + size);
     delete[] arr;
-    return valid;
+    return sorted && isBalancedHelper(curr);
 }
 
 bool AVLTree::isBalancedHelper(AVLNode* curr) {

@@ -204,6 +204,82 @@ class BaseTests {
             assert(tree.getMax()->data == 99);
         }
 
+        void test_left_left_rotation() {
+            // self balancing left left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(34);
+            tree.insert(234);
+            tree.insert(2);
+            tree.insert(-76);
+            tree.insert(29);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.insert(-3);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_left_right_rotation() {
+            // self balancing left right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(55);
+            tree.insert(87);
+            tree.insert(32);
+            tree.insert(0);
+            tree.insert(40);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.insert(33);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_right_right_rotation() {
+            // self balancing right right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(-10);
+            tree.insert(-66);
+            tree.insert(0);
+            tree.insert(-4);
+            tree.insert(3);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.insert(24932);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_right_left_rotation() {
+            // self balancing right left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(-953);
+            tree.insert(-2270);
+            tree.insert(-477);
+            tree.insert(14);
+            tree.insert(-612);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.insert(-505);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
         virtual ~BaseTests() {}
 };
 
@@ -240,9 +316,12 @@ class AVLTreeTests : public BaseTests<AVLTree> {
         }
 
         void test_tree_specific() override {
-            // MAKE AVL TREE SPECIFIC TREES
             test_all_left_insertions(7);
             test_all_right_insertions(7);
+            test_left_left_rotation();
+            test_left_right_rotation();
+            test_right_right_rotation();
+            test_right_left_rotation();
         }
 
     public:
