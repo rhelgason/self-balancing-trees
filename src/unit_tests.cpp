@@ -24,6 +24,8 @@ class BaseTests {
             test_empty_tree();
             test_insert();
             test_to_string();
+            test_get_min();
+            test_get_max();
             test_remove();
             test_one_child_remove();
             test_both_children_remove();
@@ -57,16 +59,16 @@ class BaseTests {
             assert(tree.isValid());
             assert(tree.getSize() == 1);
             assert(tree.getHeight() == 1);
-            assert(tree.getMin()->data == 5);
-            assert(tree.getMax()->data == 5);
+            assert(*(tree.getMin()) == 5);
+            assert(*(tree.getMax()) == 5);
 
             tree.insert(5);
 
             assert(tree.isValid());
             assert(tree.getSize() == 1);
             assert(tree.getHeight() == 1);
-            assert(tree.getMin()->data == 5);
-            assert(tree.getMax()->data == 5);
+            assert(*(tree.getMin()) == 5);
+            assert(*(tree.getMax()) == 5);
         }
 
         void test_to_string() {
@@ -82,6 +84,34 @@ class BaseTests {
             string str1 = tree.toString();
             string str2 = "7, 8, 9, 10, 19";
             assert(str1.compare(str2) == 0);
+        }
+
+        void test_get_min() {
+            // get minimum on empty and non-empty tree
+            print_current_test(__func__);
+            T tree = createTree();
+
+            assert(tree.getMin() == NULL);
+
+            tree.insert(43);
+            tree.insert(-1);
+            tree.insert(7);
+
+            assert(*(tree.getMin()) == -1);
+        }
+
+        void test_get_max() {
+            // get maximum on empty and non-empty tree
+            print_current_test(__func__);
+            T tree = createTree();
+
+            assert(tree.getMax() == NULL);
+
+            tree.insert(-99);
+            tree.insert(-81);
+            tree.insert(-33);
+
+            assert(*(tree.getMax()) == -33);
         }
 
         void test_remove() {
@@ -175,7 +205,7 @@ class BaseTests {
         }
 
         void test_all_left_insertions(int height) {
-            // repeatedly right insert
+            // repeatedly left insert
             print_current_test(__func__);
             T tree = createTree();
             for (int i = 99; i >= 0; i--) {
@@ -185,8 +215,8 @@ class BaseTests {
             assert(tree.isValid());
             assert(tree.getSize() == 100);
             assert(tree.getHeight() == height);
-            assert(tree.getMin()->data == 0);
-            assert(tree.getMax()->data == 99);
+            assert(*(tree.getMin()) == 0);
+            assert(*(tree.getMax()) == 99);
         }
 
         void test_all_right_insertions(int height) {
@@ -200,8 +230,8 @@ class BaseTests {
             assert(tree.isValid());
             assert(tree.getSize() == 100);
             assert(tree.getHeight() == height);
-            assert(tree.getMin()->data == 0);
-            assert(tree.getMax()->data == 99);
+            assert(*(tree.getMin()) == 0);
+            assert(*(tree.getMax()) == 99);
         }
 
         void test_left_left_insertion() {

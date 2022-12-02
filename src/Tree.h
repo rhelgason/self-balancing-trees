@@ -56,12 +56,20 @@ class Tree {
             return size;
         }
 
-        T* getMin() {
-            return getMinHelper(root);
+        int* getMin() {
+            T* min = getMinHelper(root);
+            if (min == NULL) {
+                return NULL;
+            }
+            return &(min->data);
         }
 
-        T* getMax() {
-            return getMaxHelper(root);
+        int* getMax() {
+            T* max = getMaxHelper(root);
+            if (max == NULL) {
+                return NULL;
+            }
+            return &(max->data);
         }
 
         int getHeight() {
