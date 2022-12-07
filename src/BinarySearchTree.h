@@ -15,7 +15,7 @@ class BinarySearchTree : public Tree<BinarySearchNode> {
     private:
         BinarySearchNode* makeBinarySearchNode(int data, BinarySearchNode* left, BinarySearchNode* right);
 
-        bool isValidHelper(BinarySearchNode* curr);
+        bool isValidHelper(BinarySearchNode* root);
 
         // recursive basic functions
         BinarySearchNode* insertHelper(BinarySearchNode* curr, int data);

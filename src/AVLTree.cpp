@@ -10,13 +10,16 @@ AVLNode* AVLTree::makeAVLNode(int data, AVLNode* left, AVLNode* right) {
     return temp;
 }
 
-bool AVLTree::isValidHelper(AVLNode* curr) {
+bool AVLTree::isValidHelper(AVLNode* root) {
     int* arr = new int[size];
     int i = 0;
     inorder(root, arr, i);
     bool sorted = is_sorted(arr, arr + size);
     delete[] arr;
-    return sorted && isBalancedHelper(curr);
+    if (!sorted) {
+        return false;
+    }
+    return isBalancedHelper(root);
 }
 
 bool AVLTree::isBalancedHelper(AVLNode* curr) {

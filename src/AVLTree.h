@@ -16,7 +16,7 @@ class AVLTree : public Tree<AVLNode> {
     private:
         AVLNode* makeAVLNode(int data, AVLNode* left, AVLNode* right);
 
-        bool isValidHelper(AVLNode* curr);
+        bool isValidHelper(AVLNode* root);
         bool isBalancedHelper(AVLNode* curr);
 
         // recursive basic functions

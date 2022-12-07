@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "BinarySearchTree.h"
 #include "AVLTree.h"
+#include "RedBlackTree.h"
 using namespace std;
 
 template <typename T>
@@ -475,11 +476,34 @@ class AVLTreeTests : public BaseTests<AVLTree> {
         ~AVLTreeTests() {}
 };
 
+template<class T>
+class RedBlackTreeTests : public BaseTests<RedBlackTree> {
+    protected:
+        string getName() override {
+            return "Red Black Tree";
+        }
+
+        T createTree() override {
+            return RedBlackTree();
+        }
+
+        void test_tree_specific() override {
+            assert(false);
+        }
+
+    public:
+        RedBlackTreeTests() {}
+        ~RedBlackTreeTests() {}
+};
+
 int main(int argc, char *argv[]) {
     BinarySearchTreeTests<BinarySearchTree> tester1 = BinarySearchTreeTests<BinarySearchTree>();
     tester1.test_all();
 
     AVLTreeTests<AVLTree> tester2 = AVLTreeTests<AVLTree>();
     tester2.test_all();
+
+    RedBlackTreeTests<RedBlackTree> tester3 = RedBlackTreeTests<RedBlackTree>();
+    tester3.test_all();
     cout << endl;
 }

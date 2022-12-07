@@ -9,7 +9,7 @@ BinarySearchNode* BinarySearchTree::makeBinarySearchNode(int data, BinarySearchN
     return temp;
 }
 
-bool BinarySearchTree::isValidHelper(BinarySearchNode* curr) {
+bool BinarySearchTree::isValidHelper(BinarySearchNode* root) {
     int* arr = new int[size];
     int i = 0;
     inorder(root, arr, i);
