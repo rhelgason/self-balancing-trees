@@ -13,7 +13,7 @@ typedef struct BinarySearchNode {
 
 class BinarySearchTree : public Tree<BinarySearchNode> {
     private:
-        BinarySearchNode* makeBinarySearchNode(int data, BinarySearchNode* left, BinarySearchNode* right);
+        BinarySearchNode* makeBinarySearchNode(int data);
 
         bool isValidHelper(BinarySearchNode* root);
 

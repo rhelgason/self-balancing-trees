@@ -1,13 +1,12 @@
 #include "RedBlackTree.h"
 
 /* PRIVATE FUNCTIONS */
-RedBlackNode* RedBlackTree::makeRedBlackNode(int data, int color, RedBlackNode* left, RedBlackNode* right, RedBlackNode* parent) {
+RedBlackNode* RedBlackTree::makeRedBlackNode(int data, int color) {
     RedBlackNode* temp = new RedBlackNode;
     temp->data = data;
     temp->color = color;
-    temp->left = left;
-    temp->right = right;
-    temp->parent = parent;
+    temp->left = NULL;
+    temp->right = NULL;
     return temp;
 }
 
@@ -45,7 +44,9 @@ int RedBlackTree::ensureRedBlackProperties(RedBlackNode* curr, bool &valid) {
         return 1;
     }
 
-    if (curr->color == RED && getColor(curr->parent) == RED) {
+    if (curr->color == RED
+        && (getColor(curr->left) == RED
+        || getColor(curr->right) == RED)) {
         valid = false;
     }
 

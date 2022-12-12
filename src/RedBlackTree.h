@@ -13,12 +13,11 @@ typedef struct RedBlackNode {
     int color;
     RedBlackNode* left;
     RedBlackNode* right;
-    RedBlackNode* parent;
 } RedBlackNode;
 
 class RedBlackTree : public Tree<RedBlackNode> {
     private:
-        RedBlackNode* makeRedBlackNode(int data, int color, RedBlackNode* left, RedBlackNode* right, RedBlackNode* parent);
+        RedBlackNode* makeRedBlackNode(int data, int color);
 
         bool isValidHelper(RedBlackNode* root);
         int getColor(RedBlackNode* curr);

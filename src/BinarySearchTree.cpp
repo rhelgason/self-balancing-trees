@@ -1,11 +1,11 @@
 #include "BinarySearchTree.h"
 
 /* PRIVATE FUNCTIONS */
-BinarySearchNode* BinarySearchTree::makeBinarySearchNode(int data, BinarySearchNode* left, BinarySearchNode* right) {
+BinarySearchNode* BinarySearchTree::makeBinarySearchNode(int data) {
     BinarySearchNode* temp = new BinarySearchNode;
     temp->data = data;
-    temp->left = left;
-    temp->right = right;
+    temp->left = NULL;
+    temp->right = NULL;
     return temp;
 }
 
@@ -21,7 +21,7 @@ bool BinarySearchTree::isValidHelper(BinarySearchNode* root) {
 BinarySearchNode* BinarySearchTree::insertHelper(BinarySearchNode* curr, int data) {
     if (curr == NULL) {
         size += 1;
-        return makeBinarySearchNode(data, NULL, NULL);
+        return makeBinarySearchNode(data);
     }
 
     if (data < curr->data) {

@@ -1,12 +1,12 @@
 #include "AVLTree.h"
 
 /* PRIVATE FUNCTIONS */
-AVLNode* AVLTree::makeAVLNode(int data, AVLNode* left, AVLNode* right) {
+AVLNode* AVLTree::makeAVLNode(int data) {
     AVLNode* temp = new AVLNode;
     temp->data = data;
     temp->height = 1;
-    temp->left = left;
-    temp->right = right;
+    temp->left = NULL;
+    temp->right = NULL;
     return temp;
 }
 
@@ -33,7 +33,7 @@ bool AVLTree::isBalancedHelper(AVLNode* curr) {
 AVLNode* AVLTree::insertHelper(AVLNode* curr, int data) {
     if (curr == NULL) {
         size += 1;
-        return makeAVLNode(data, NULL, NULL);
+        return makeAVLNode(data);
     }
 
     if (data < curr->data) {

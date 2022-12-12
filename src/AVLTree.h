@@ -14,7 +14,7 @@ typedef struct AVLNode {
 
 class AVLTree : public Tree<AVLNode> {
     private:
-        AVLNode* makeAVLNode(int data, AVLNode* left, AVLNode* right);
+        AVLNode* makeAVLNode(int data);
 
         bool isValidHelper(AVLNode* root);
         bool isBalancedHelper(AVLNode* curr);
