@@ -235,7 +235,7 @@ class BaseTests {
             assert(*(tree.getMax()) == 99);
         }
 
-        void test_left_left_insertion(int h1, int h2) {
+        void test_AVL_left_left_insertion() {
             // self balancing left left case
             print_current_test(__func__);
             T tree = createTree();
@@ -246,15 +246,15 @@ class BaseTests {
             tree.insert(29);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 3);
 
             tree.insert(-3);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_left_right_insertion(int h1, int h2) {
+        void test_AVL_left_right_insertion() {
             // self balancing left right case
             print_current_test(__func__);
             T tree = createTree();
@@ -265,15 +265,15 @@ class BaseTests {
             tree.insert(40);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 3);
 
             tree.insert(33);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_right_right_insertion(int h1, int h2) {
+        void test_AVL_right_right_insertion() {
             // self balancing right right case
             print_current_test(__func__);
             T tree = createTree();
@@ -284,15 +284,15 @@ class BaseTests {
             tree.insert(3);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 3);
 
             tree.insert(24932);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_right_left_insertion(int h1, int h2) {
+        void test_AVL_right_left_insertion() {
             // self balancing right left case
             print_current_test(__func__);
             T tree = createTree();
@@ -303,15 +303,15 @@ class BaseTests {
             tree.insert(-612);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 3);
 
             tree.insert(-505);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_left_left_deletion(int h1, int h2, int h3) {
+        void test_AVL_left_left_deletion() {
             // self balancing left left case
             print_current_test(__func__);
             T tree = createTree();
@@ -320,7 +320,7 @@ class BaseTests {
             }
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 4);
 
             tree.remove(4);
             tree.remove(6);
@@ -331,15 +331,15 @@ class BaseTests {
             tree.remove(9);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 4);
 
             tree.remove(13);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h3);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_left_right_deletion(int h1, int h2, int h3) {
+        void test_AVL_left_right_deletion() {
             // self balancing left right case
             print_current_test(__func__);
             T tree = createTree();
@@ -348,7 +348,7 @@ class BaseTests {
             }
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 4);
 
             tree.remove(0);
             tree.remove(2);
@@ -359,15 +359,15 @@ class BaseTests {
             tree.remove(9);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 4);
 
             tree.remove(13);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h3);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_right_right_deletion(int h1, int h2, int h3) {
+        void test_AVL_right_right_deletion() {
             // self balancing right right case
             print_current_test(__func__);
             T tree = createTree();
@@ -376,7 +376,7 @@ class BaseTests {
             }
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 4);
 
             tree.remove(0);
             tree.remove(2);
@@ -387,15 +387,15 @@ class BaseTests {
             tree.remove(1);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 4);
 
             tree.remove(5);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h3);
+            assert(tree.getHeight() == 3);
         }
 
-        void test_right_left_deletion(int h1, int h2, int h3) {
+        void test_AVL_right_left_deletion() {
             // self balancing right left case
             print_current_test(__func__);
             T tree = createTree();
@@ -404,7 +404,7 @@ class BaseTests {
             }
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h1);
+            assert(tree.getHeight() == 4);
 
             tree.remove(0);
             tree.remove(2);
@@ -415,12 +415,84 @@ class BaseTests {
             tree.remove(1);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h2);
+            assert(tree.getHeight() == 4);
 
             tree.remove(5);
 
             assert(tree.isValid());
-            assert(tree.getHeight() == h3);
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_RedBlack_left_left_insertion() {
+            // self balancing left left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(3);
+            tree.insert(10);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+
+            tree.insert(15);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+        }
+
+        void test_RedBlack_left_right_insertion() {
+            // self balancing left right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(61);
+            tree.insert(4);
+            tree.insert(88);
+            tree.insert(533);
+            tree.insert(70);
+            tree.insert(271);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
+
+            tree.insert(304);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
+        }
+
+        void test_RedBlack_right_right_insertion() {
+            // self balancing right right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(0);
+            tree.insert(-57);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+
+            tree.insert(-757834);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+        }
+
+        void test_RedBlack_right_left_insertion() {
+            // self balancing right left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(55);
+            tree.insert(87);
+            tree.insert(32);
+            tree.insert(0);
+            tree.insert(40);
+            tree.insert(15);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
+
+            tree.insert(12);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
         }
 
         virtual ~BaseTests() {}
@@ -461,14 +533,14 @@ class AVLTreeTests : public BaseTests<AVLTree> {
         void test_tree_specific() override {
             test_all_left_insertions(7);
             test_all_right_insertions(7);
-            test_left_left_insertion(3, 3);
-            test_left_right_insertion(3, 3);
-            test_right_right_insertion(3, 3);
-            test_right_left_insertion(3, 3);
-            test_left_left_deletion(4, 4, 3);
-            test_left_right_deletion(4, 4, 3);
-            test_right_right_deletion(4, 4, 3);
-            test_right_left_deletion(4, 4, 3);
+            test_AVL_left_left_insertion();
+            test_AVL_left_right_insertion();
+            test_AVL_right_right_insertion();
+            test_AVL_right_left_insertion();
+            test_AVL_left_left_deletion();
+            test_AVL_left_right_deletion();
+            test_AVL_right_right_deletion();
+            test_AVL_right_left_deletion();
         }
 
     public:
@@ -490,14 +562,10 @@ class RedBlackTreeTests : public BaseTests<RedBlackTree> {
         void test_tree_specific() override {
             test_all_left_insertions(11);
             test_all_right_insertions(11);
-            test_left_left_insertion(3, 4);
-            test_left_right_insertion(3, 4);
-            test_right_right_insertion(3, 4);
-            test_right_left_insertion(3, 4);
-            test_left_left_deletion(6, 4, 3);
-            test_left_right_deletion(6, 4, 3);
-            test_right_right_deletion(6, 4, 4);
-            test_right_left_deletion(6, 4, 3);
+            test_RedBlack_left_left_insertion();
+            test_RedBlack_left_right_insertion();
+            test_RedBlack_right_right_insertion();
+            test_RedBlack_right_left_insertion();
         }
 
     public:
