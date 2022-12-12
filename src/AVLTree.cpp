@@ -230,6 +230,7 @@ void AVLTree::inorder(AVLNode* curr, int* &arr, int &i) {
     inorder(curr->right, arr, i);
 }
 
+/* PUBLIC FUNCTIONS */
 AVLTree::~AVLTree() {
     purge();
 }

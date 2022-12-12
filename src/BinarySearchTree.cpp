@@ -126,6 +126,7 @@ void BinarySearchTree::inorder(BinarySearchNode* curr, int* &arr, int &i) {
     inorder(curr->right, arr, i);
 }
 
+/* PUBLIC FUNCTIONS */
 BinarySearchTree::~BinarySearchTree() {
     purge();
 }
