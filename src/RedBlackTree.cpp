@@ -90,7 +90,89 @@ RedBlackNode* RedBlackTree::insertFix(RedBlackNode* curr, bool i) {
 }
 
 RedBlackNode* RedBlackTree::removeHelper(RedBlackNode* curr, int data) {
-    return NULL;
+    bool valid = false;
+    root = removeHelper(root, data, valid);
+    if (root != NULL) {
+        root->color = BLACK;
+    }
+    return root;
+}
+
+RedBlackNode* RedBlackTree::removeHelper(RedBlackNode* curr, int data, bool &valid) {
+    if (curr == NULL) {
+        valid = true;
+        return NULL;
+    }
+
+    if (curr->data == data) {
+        if (curr->child[left] == NULL || curr->child[right] == NULL) {
+            // one child or no children
+            RedBlackNode* temp = curr->child[right] == NULL ? curr->child[left] : curr->child[right];
+            if (isRed(curr)) {
+                delete curr;
+                valid = true;
+            } else if (isRed(temp)) {
+                temp->color = BLACK;
+                delete temp;
+                valid = true;
+            }
+
+            size -= 1;
+            return temp;
+        } else {
+            // two children, get inorder successor
+            RedBlackNode* temp = getMinHelper(curr->child[right]);
+            curr->data = temp->data;
+            curr->child[right] = removeHelper(curr->child[right], temp->data, valid);
+        }
+    }
+
+    bool i = data > curr->data;
+    curr->child[i] = removeHelper(curr->child[i], data, valid);
+    return valid ? curr : removeFix(curr, i, valid);
+}
+
+RedBlackNode* RedBlackTree::removeFix(RedBlackNode* curr, bool i, bool &valid) {
+    RedBlackNode* parent = curr;
+    RedBlackNode* sibling = curr->child[!i];
+
+    if (isRed(sibling)) {
+        curr = rotate(curr, i);
+        sibling = parent->child[!i];
+    }
+
+    if (sibling != NULL) {
+        if (!isRed(sibling->child[left]) && !isRed(sibling->child[right])) {
+            // black sibling with two black children
+            if (isRed(parent)) {
+                valid = true;
+            }
+            parent->color = BLACK;
+            sibling->color = RED;
+        } else {
+            // black sibling with red child
+            int parentColor = parent->color;
+            bool isRedSibling = curr != parent;
+
+            if (isRed(sibling->child[!i])) {
+                parent = rotate(parent, i);
+            } else {
+                parent = doubleRotate(parent, i);
+            }
+
+            parent->color = parentColor;
+            parent->child[left]->color = BLACK;
+            parent->child[right]->color = BLACK;
+
+            if (isRedSibling) {
+                curr->child[i] = parent;
+            } else {
+                curr = parent;
+            }
+            valid = true;
+        }
+    }
+    return curr;
 }
 
 RedBlackNode* RedBlackTree::find(RedBlackNode* curr, int data) {

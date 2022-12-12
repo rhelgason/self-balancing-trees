@@ -28,6 +28,8 @@ class RedBlackTree : public Tree<RedBlackNode> {
         RedBlackNode* insertHelper(RedBlackNode* curr, int data);
         RedBlackNode* insertFix(RedBlackNode* curr, bool i);
         RedBlackNode* removeHelper(RedBlackNode* curr, int data);
+        RedBlackNode* removeHelper(RedBlackNode* curr, int data, bool &valid);
+        RedBlackNode* removeFix(RedBlackNode* curr, bool i, bool &valid);
         RedBlackNode* find(RedBlackNode* curr, int data);
         RedBlackNode* purgeHelper(RedBlackNode* curr);
 
