@@ -13,21 +13,21 @@ typedef struct BinarySearchNode {
 
 class BinarySearchTree : public Tree<BinarySearchNode> {
     private:
-        BinarySearchNode* makeBinarySearchNode(int data);
+        BinarySearchNode* Node(int data);
 
-        bool isValidHelper(BinarySearchNode* root);
+        bool _isValid(BinarySearchNode* root);
 
         // recursive basic functions
-        BinarySearchNode* insertHelper(BinarySearchNode* curr, int data);
-        BinarySearchNode* removeHelper(BinarySearchNode* curr, int data);
-        BinarySearchNode* find(BinarySearchNode* curr, int data);
-        BinarySearchNode* purgeHelper(BinarySearchNode* curr);
+        BinarySearchNode* _insert(BinarySearchNode* curr, int data);
+        BinarySearchNode* _remove(BinarySearchNode* curr, int data);
+        BinarySearchNode* _find(BinarySearchNode* curr, int data);
+        BinarySearchNode* _purge(BinarySearchNode* curr);
 
         // recursive helper functions
-        BinarySearchNode* getMinHelper(BinarySearchNode* curr);
-        BinarySearchNode* getMaxHelper(BinarySearchNode* curr);
-        int getHeightHelper(BinarySearchNode* curr);
-        void inorder(BinarySearchNode* curr, int* &arr, int &i);
+        BinarySearchNode* _getMin(BinarySearchNode* curr);
+        BinarySearchNode* _getMax(BinarySearchNode* curr);
+        int _getHeight(BinarySearchNode* curr);
+        void _inorder(BinarySearchNode* curr, int* &arr, int &i);
 
     public:
         ~BinarySearchTree();

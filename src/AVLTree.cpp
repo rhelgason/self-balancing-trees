@@ -1,7 +1,7 @@
 #include "AVLTree.h"
 
 /* PRIVATE FUNCTIONS */
-AVLNode* AVLTree::makeAVLNode(int data) {
+AVLNode* AVLTree::Node(int data) {
     AVLNode* temp = new AVLNode;
     temp->data = data;
     temp->height = 1;
@@ -10,42 +10,42 @@ AVLNode* AVLTree::makeAVLNode(int data) {
     return temp;
 }
 
-bool AVLTree::isValidHelper(AVLNode* root) {
+bool AVLTree::_isValid(AVLNode* root) {
     int* arr = new int[size];
     int i = 0;
-    inorder(root, arr, i);
+    _inorder(root, arr, i);
     bool sorted = is_sorted(arr, arr + size);
     delete[] arr;
     if (!sorted) {
         return false;
     }
-    return isBalancedHelper(root);
+    return isBalanced(root);
 }
 
-bool AVLTree::isBalancedHelper(AVLNode* curr) {
+bool AVLTree::isBalanced(AVLNode* curr) {
     if (curr == NULL) {
         return true;
     }
-    int balance = getBalanceHelper(curr);
-    return balance >= -1 && balance <= 1 && isBalancedHelper(curr->left) && isBalancedHelper(curr->right);
+    int balance = getBalance(curr);
+    return balance >= -1 && balance <= 1 && isBalanced(curr->left) && isBalanced(curr->right);
 }
 
-AVLNode* AVLTree::insertHelper(AVLNode* curr, int data) {
+AVLNode* AVLTree::_insert(AVLNode* curr, int data) {
     if (curr == NULL) {
         size += 1;
-        return makeAVLNode(data);
+        return Node(data);
     }
 
     if (data < curr->data) {
-        curr->left = insertHelper(curr->left, data);
+        curr->left = _insert(curr->left, data);
     } else if (data > curr->data) {
-        curr->right = insertHelper(curr->right, data);
+        curr->right = _insert(curr->right, data);
     } else {
         return curr;
     }
 
     updateHeight(curr);
-    int balance = getBalanceHelper(curr);
+    int balance = getBalance(curr);
 
     // left-left case
     if (balance > 1 && data < curr->left->data) {
@@ -71,16 +71,16 @@ AVLNode* AVLTree::insertHelper(AVLNode* curr, int data) {
     return curr;
 }
 
-AVLNode* AVLTree::removeHelper(AVLNode* curr, int data) {
+AVLNode* AVLTree::_remove(AVLNode* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
 
     if (data < curr->data) {
-        curr->left = removeHelper(curr->left, data);
+        curr->left = _remove(curr->left, data);
         updateHeight(curr);
     } else if (data > curr->data) {
-        curr->right = removeHelper(curr->right, data);
+        curr->right = _remove(curr->right, data);
         updateHeight(curr);
     } else {
         if (curr->left == NULL || curr->right == NULL) {
@@ -97,10 +97,10 @@ AVLNode* AVLTree::removeHelper(AVLNode* curr, int data) {
             }
             size -= 1;
         } else {
-            // two children, get inorder successor
-            AVLNode* temp = getMinHelper(curr->right);
+            // two children, get _inorder successor
+            AVLNode* temp = _getMin(curr->right);
             curr->data = temp->data;
-            curr->right = removeHelper(curr->right, temp->data);
+            curr->right = _remove(curr->right, temp->data);
         }
     }
 
@@ -110,67 +110,67 @@ AVLNode* AVLTree::removeHelper(AVLNode* curr, int data) {
     }
 
     updateHeight(curr);
-    int balance = getBalanceHelper(curr);
+    int balance = getBalance(curr);
 
     // left-left case
-    if (balance > 1 && getBalanceHelper(curr->left) >= 0) {
+    if (balance > 1 && getBalance(curr->left) >= 0) {
         return rotateRight(curr);
     }
 
     // left-right case
-    if (balance > 1 && getBalanceHelper(curr->left) < 0) {
+    if (balance > 1 && getBalance(curr->left) < 0) {
         curr->left = rotateLeft(curr->left);
         return rotateRight(curr);
     }
 
     // right-right case
-    if (balance < -1 && getBalanceHelper(curr->right) <= 0) {
+    if (balance < -1 && getBalance(curr->right) <= 0) {
         return rotateLeft(curr);
     }
 
     // right-left case
-    if (balance < -1 && getBalanceHelper(curr->right) > 0) {
+    if (balance < -1 && getBalance(curr->right) > 0) {
         curr->right = rotateRight(curr->right);
         return rotateLeft(curr);
     }
     return curr;
 }
 
-AVLNode* AVLTree::find(AVLNode* curr, int data) {
+AVLNode* AVLTree::_find(AVLNode* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
 
     if (data < curr->data) {
-        return find(curr->left, data);
+        return _find(curr->left, data);
     } else if (data > curr->data) {
-        return find(curr->right, data);
+        return _find(curr->right, data);
     }
 
     return curr;
 }
 
-AVLNode* AVLTree::purgeHelper(AVLNode* curr) {
+AVLNode* AVLTree::_purge(AVLNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
 
-    purgeHelper(curr->left);
-    purgeHelper(curr->right);
+    _purge(curr->left);
+    _purge(curr->right);
     delete curr;
     size -= 1;
     return NULL;
 }
 
-int AVLTree::getBalanceHelper(AVLNode* curr) {
+int AVLTree::getBalance(AVLNode* curr) {
     if (curr == NULL) {
         return 0;
     }
-    return getHeightHelper(curr->left) - getHeightHelper(curr->right);
+    return _getHeight(curr->left) - _getHeight(curr->right);
 }
 
 void AVLTree::updateHeight(AVLNode* curr) {
-    curr->height = max(getHeightHelper(curr->left), getHeightHelper(curr->right)) + 1;
+    curr->height = max(_getHeight(curr->left), _getHeight(curr->right)) + 1;
 }
 
 AVLNode* AVLTree::rotateRight(AVLNode* curr) {
@@ -195,7 +195,7 @@ AVLNode* AVLTree::rotateLeft(AVLNode* curr) {
     return child;
 }
 
-AVLNode* AVLTree::getMinHelper(AVLNode* curr) {
+AVLNode* AVLTree::_getMin(AVLNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -203,10 +203,10 @@ AVLNode* AVLTree::getMinHelper(AVLNode* curr) {
     if (curr->left == NULL) {
         return curr;
     }
-    return getMinHelper(curr->left);
+    return _getMin(curr->left);
 }
 
-AVLNode* AVLTree::getMaxHelper(AVLNode* curr) {
+AVLNode* AVLTree::_getMax(AVLNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -214,20 +214,20 @@ AVLNode* AVLTree::getMaxHelper(AVLNode* curr) {
     if (curr->right == NULL) {
         return curr;
     }
-    return getMaxHelper(curr->right);
+    return _getMax(curr->right);
 }
 
-int AVLTree::getHeightHelper(AVLNode* curr) {
+int AVLTree::_getHeight(AVLNode* curr) {
     return curr == NULL ? 0 : curr->height;
 }
 
-void AVLTree::inorder(AVLNode* curr, int* &arr, int &i) {
+void AVLTree::_inorder(AVLNode* curr, int* &arr, int &i) {
     if (curr == NULL) {
         return;
     }
-    inorder(curr->left, arr, i);
+    _inorder(curr->left, arr, i);
     arr[i++] = curr->data;
-    inorder(curr->right, arr, i);
+    _inorder(curr->right, arr, i);
 }
 
 /* PUBLIC FUNCTIONS */

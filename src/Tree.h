@@ -10,19 +10,20 @@ class Tree {
         T* root;
         int size;
 
-        virtual bool isValidHelper(T* curr) = 0;
+        virtual T* Node(int data) = 0;
+        virtual bool _isValid(T* curr) = 0;
 
         // recursive basic functions
-        virtual T* insertHelper(T* curr, int data) = 0;
-        virtual T* removeHelper(T* curr, int data) = 0;
-        virtual T* find(T* curr, int data) = 0;
-        virtual T* purgeHelper(T* curr) = 0;
+        virtual T* _insert(T* curr, int data) = 0;
+        virtual T* _remove(T* curr, int data) = 0;
+        virtual T* _find(T* curr, int data) = 0;
+        virtual T* _purge(T* curr) = 0;
 
         // recursive helper functions
-        virtual T* getMinHelper(T* curr) = 0;
-        virtual T* getMaxHelper(T* curr) = 0;
-        virtual int getHeightHelper(T* curr) = 0;
-        virtual void inorder(T* curr, int* &arr, int &i) = 0;
+        virtual T* _getMin(T* curr) = 0;
+        virtual T* _getMax(T* curr) = 0;
+        virtual int _getHeight(T* curr) = 0;
+        virtual void _inorder(T* curr, int* &arr, int &i) = 0;
 
     public:
         Tree() {
@@ -31,24 +32,24 @@ class Tree {
         }
 
         bool isValid() {
-            return isValidHelper(root);
+            return _isValid(root);
         }
 
         // basic functions
         void insert(int data) {
-            root = insertHelper(root, data);
+            root = _insert(root, data);
         }
 
         void remove(int data) {
-            root = removeHelper(root, data);
+            root = _remove(root, data);
         }
 
         bool includes(int data) {
-            return find(root, data) != NULL;
+            return _find(root, data) != NULL;
         }
 
         void purge() {
-            root = purgeHelper(root);
+            root = _purge(root);
         }
 
         // helper functions
@@ -57,7 +58,7 @@ class Tree {
         }
 
         int* getMin() {
-            T* min = getMinHelper(root);
+            T* min = _getMin(root);
             if (min == NULL) {
                 return NULL;
             }
@@ -65,7 +66,7 @@ class Tree {
         }
 
         int* getMax() {
-            T* max = getMaxHelper(root);
+            T* max = _getMax(root);
             if (max == NULL) {
                 return NULL;
             }
@@ -73,13 +74,13 @@ class Tree {
         }
 
         int getHeight() {
-            return getHeightHelper(root);
+            return _getHeight(root);
         }
 
         string toString() {
             int* arr = new int[size];
             int i = 0;
-            inorder(root, arr, i);
+            _inorder(root, arr, i);
             string str = "";
             for (i = 0; i < size - 1; i++) {
                 str += to_string(arr[i]) + ", ";

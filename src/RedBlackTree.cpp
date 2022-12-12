@@ -1,7 +1,7 @@
 #include "RedBlackTree.h"
 
 /* PRIVATE FUNCTIONS */
-RedBlackNode* RedBlackTree::makeRedBlackNode(int data) {
+RedBlackNode* RedBlackTree::Node(int data) {
     RedBlackNode* temp = new RedBlackNode;
     temp->data = data;
     temp->color = RED;
@@ -10,7 +10,7 @@ RedBlackNode* RedBlackTree::makeRedBlackNode(int data) {
     return temp;
 }
 
-bool RedBlackTree::isValidHelper(RedBlackNode* root) {
+bool RedBlackTree::_isValid(RedBlackNode* root) {
     if (root == NULL) {
         return true;
     }
@@ -20,7 +20,7 @@ bool RedBlackTree::isValidHelper(RedBlackNode* root) {
 
     int* arr = new int[size];
     int i = 0;
-    inorder(root, arr, i);
+    _inorder(root, arr, i);
     bool sorted = is_sorted(arr, arr + size);
     delete[] arr;
     if (!sorted) {
@@ -57,16 +57,16 @@ int RedBlackTree::ensureRedBlackProperties(RedBlackNode* curr, bool &valid) {
     return numLeft;
 }
 
-RedBlackNode* RedBlackTree::insertHelper(RedBlackNode* curr, int data) {
+RedBlackNode* RedBlackTree::_insert(RedBlackNode* curr, int data) {
     if (curr == NULL) {
         size += 1;
-        return makeRedBlackNode(data);
+        return Node(data);
     } else if (curr->data == data) {
         return curr;
     }
 
     bool i = data > curr->data;
-    curr->child[i] = insertHelper(curr->child[i], data);
+    curr->child[i] = _insert(curr->child[i], data);
     return insertFix(curr, i);
 }
 
@@ -89,16 +89,16 @@ RedBlackNode* RedBlackTree::insertFix(RedBlackNode* curr, bool i) {
     return curr;
 }
 
-RedBlackNode* RedBlackTree::removeHelper(RedBlackNode* curr, int data) {
+RedBlackNode* RedBlackTree::_remove(RedBlackNode* curr, int data) {
     bool valid = false;
-    root = removeHelper(root, data, valid);
+    root = _remove(root, data, valid);
     if (root != NULL) {
         root->color = BLACK;
     }
     return root;
 }
 
-RedBlackNode* RedBlackTree::removeHelper(RedBlackNode* curr, int data, bool &valid) {
+RedBlackNode* RedBlackTree::_remove(RedBlackNode* curr, int data, bool &valid) {
     if (curr == NULL) {
         valid = true;
         return NULL;
@@ -120,15 +120,15 @@ RedBlackNode* RedBlackTree::removeHelper(RedBlackNode* curr, int data, bool &val
             size -= 1;
             return temp;
         } else {
-            // two children, get inorder successor
-            RedBlackNode* temp = getMinHelper(curr->child[right]);
+            // two children, get _inorder successor
+            RedBlackNode* temp = _getMin(curr->child[right]);
             curr->data = temp->data;
-            curr->child[right] = removeHelper(curr->child[right], temp->data, valid);
+            curr->child[right] = _remove(curr->child[right], temp->data, valid);
         }
     }
 
     bool i = data > curr->data;
-    curr->child[i] = removeHelper(curr->child[i], data, valid);
+    curr->child[i] = _remove(curr->child[i], data, valid);
     return valid ? curr : removeFix(curr, i, valid);
 }
 
@@ -175,27 +175,27 @@ RedBlackNode* RedBlackTree::removeFix(RedBlackNode* curr, bool i, bool &valid) {
     return curr;
 }
 
-RedBlackNode* RedBlackTree::find(RedBlackNode* curr, int data) {
+RedBlackNode* RedBlackTree::_find(RedBlackNode* curr, int data) {
     if (curr == NULL) {
         return NULL;
     }
 
     if (data < curr->data) {
-        return find(curr->child[left], data);
+        return _find(curr->child[left], data);
     } else if (data > curr->data) {
-        return find(curr->child[right], data);
+        return _find(curr->child[right], data);
     }
 
     return curr;
 }
 
-RedBlackNode* RedBlackTree::purgeHelper(RedBlackNode* curr) {
+RedBlackNode* RedBlackTree::_purge(RedBlackNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
 
-    purgeHelper(curr->child[left]);
-    purgeHelper(curr->child[right]);
+    _purge(curr->child[left]);
+    _purge(curr->child[right]);
     delete curr;
     size -= 1;
     return NULL;
@@ -223,7 +223,7 @@ void RedBlackTree::flipColors(RedBlackNode* curr) {
     curr->child[right]->color = curr->child[right]->color^1;
 }
 
-RedBlackNode* RedBlackTree::getMinHelper(RedBlackNode* curr) {
+RedBlackNode* RedBlackTree::_getMin(RedBlackNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -231,10 +231,10 @@ RedBlackNode* RedBlackTree::getMinHelper(RedBlackNode* curr) {
     if (curr->child[left] == NULL) {
         return curr;
     }
-    return getMinHelper(curr->child[left]);
+    return _getMin(curr->child[left]);
 }
 
-RedBlackNode* RedBlackTree::getMaxHelper(RedBlackNode* curr) {
+RedBlackNode* RedBlackTree::_getMax(RedBlackNode* curr) {
     if (curr == NULL) {
         return NULL;
     }
@@ -242,29 +242,29 @@ RedBlackNode* RedBlackTree::getMaxHelper(RedBlackNode* curr) {
     if (curr->child[right] == NULL) {
         return curr;
     }
-    return getMaxHelper(curr->child[right]);
+    return _getMax(curr->child[right]);
 }
 
-int RedBlackTree::getHeightHelper(RedBlackNode* curr) {
+int RedBlackTree::_getHeight(RedBlackNode* curr) {
     if (curr == NULL) {
         return 0;
     }
 
-    return max(getHeightHelper(curr->child[left]), getHeightHelper(curr->child[right])) + 1;
+    return max(_getHeight(curr->child[left]), _getHeight(curr->child[right])) + 1;
 }
 
-void RedBlackTree::inorder(RedBlackNode* curr, int* &arr, int &i) {
+void RedBlackTree::_inorder(RedBlackNode* curr, int* &arr, int &i) {
     if (curr == NULL) {
         return;
     }
-    inorder(curr->child[left], arr, i);
+    _inorder(curr->child[left], arr, i);
     arr[i++] = curr->data;
-    inorder(curr->child[right], arr, i);
+    _inorder(curr->child[right], arr, i);
 }
 
 /* PUBLIC FUNCTIONS */
 void RedBlackTree::insert(int data) {
-    root = insertHelper(root, data);
+    root = _insert(root, data);
     root->color = BLACK;
 }
 

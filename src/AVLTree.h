@@ -14,28 +14,28 @@ typedef struct AVLNode {
 
 class AVLTree : public Tree<AVLNode> {
     private:
-        AVLNode* makeAVLNode(int data);
+        AVLNode* Node(int data);
 
-        bool isValidHelper(AVLNode* root);
-        bool isBalancedHelper(AVLNode* curr);
+        bool _isValid(AVLNode* root);
+        bool isBalanced(AVLNode* curr);
 
         // recursive basic functions
-        AVLNode* insertHelper(AVLNode* curr, int data);
-        AVLNode* removeHelper(AVLNode* curr, int data);
-        AVLNode* find(AVLNode* curr, int data);
-        AVLNode* purgeHelper(AVLNode* curr);
+        AVLNode* _insert(AVLNode* curr, int data);
+        AVLNode* _remove(AVLNode* curr, int data);
+        AVLNode* _find(AVLNode* curr, int data);
+        AVLNode* _purge(AVLNode* curr);
 
         // rotation functions
-        int getBalanceHelper(AVLNode* curr);
+        int getBalance(AVLNode* curr);
         void updateHeight(AVLNode* curr);
         AVLNode* rotateRight(AVLNode* curr);
         AVLNode* rotateLeft(AVLNode* curr);
 
         // recursive helper functions
-        AVLNode* getMinHelper(AVLNode* curr);
-        AVLNode* getMaxHelper(AVLNode* curr);
-        int getHeightHelper(AVLNode* curr);
-        void inorder(AVLNode* curr, int* &arr, int &i);
+        AVLNode* _getMin(AVLNode* curr);
+        AVLNode* _getMax(AVLNode* curr);
+        int _getHeight(AVLNode* curr);
+        void _inorder(AVLNode* curr, int* &arr, int &i);
 
     public:
         ~AVLTree();

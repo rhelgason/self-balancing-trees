@@ -18,20 +18,20 @@ typedef struct RedBlackNode {
 
 class RedBlackTree : public Tree<RedBlackNode> {
     private:
-        RedBlackNode* makeRedBlackNode(int data);
+        RedBlackNode* Node(int data);
 
-        bool isValidHelper(RedBlackNode* root);
+        bool _isValid(RedBlackNode* root);
         bool isRed(RedBlackNode* curr);
         int ensureRedBlackProperties(RedBlackNode* curr, bool &valid);
 
         // recursive basic functions
-        RedBlackNode* insertHelper(RedBlackNode* curr, int data);
+        RedBlackNode* _insert(RedBlackNode* curr, int data);
         RedBlackNode* insertFix(RedBlackNode* curr, bool i);
-        RedBlackNode* removeHelper(RedBlackNode* curr, int data);
-        RedBlackNode* removeHelper(RedBlackNode* curr, int data, bool &valid);
+        RedBlackNode* _remove(RedBlackNode* curr, int data);
+        RedBlackNode* _remove(RedBlackNode* curr, int data, bool &valid);
         RedBlackNode* removeFix(RedBlackNode* curr, bool i, bool &valid);
-        RedBlackNode* find(RedBlackNode* curr, int data);
-        RedBlackNode* purgeHelper(RedBlackNode* curr);
+        RedBlackNode* _find(RedBlackNode* curr, int data);
+        RedBlackNode* _purge(RedBlackNode* curr);
 
         // rotation functions
         RedBlackNode* rotate(RedBlackNode* curr, bool i);
@@ -39,10 +39,10 @@ class RedBlackTree : public Tree<RedBlackNode> {
         void flipColors(RedBlackNode* curr);
 
         // recursive helper functions
-        RedBlackNode* getMinHelper(RedBlackNode* curr);
-        RedBlackNode* getMaxHelper(RedBlackNode* curr);
-        int getHeightHelper(RedBlackNode* curr);
-        void inorder(RedBlackNode* curr, int* &arr, int &i);
+        RedBlackNode* _getMin(RedBlackNode* curr);
+        RedBlackNode* _getMax(RedBlackNode* curr);
+        int _getHeight(RedBlackNode* curr);
+        void _inorder(RedBlackNode* curr, int* &arr, int &i);
 
     public:
         // basic functions
