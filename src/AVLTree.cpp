@@ -84,18 +84,11 @@ AVLNode* AVLTree::_remove(AVLNode* curr, int data) {
         updateHeight(curr);
     } else {
         if (curr->left == NULL || curr->right == NULL) {
+            // one child or no children
             AVLNode* temp = curr->left == NULL ? curr->right : curr->left;
-            if (temp == NULL) {
-                // no children
-                temp = curr;
-                delete temp;
-                curr = NULL;
-            } else {
-                // one child
-                curr->data = temp->data;
-                delete temp;
-            }
+            delete curr;
             size -= 1;
+            return temp;
         } else {
             // two children, get _inorder successor
             AVLNode* temp = _getMin(curr->right);

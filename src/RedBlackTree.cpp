@@ -107,16 +107,8 @@ RedBlackNode* RedBlackTree::_remove(RedBlackNode* curr, int data, bool &valid) {
     if (curr->data == data) {
         if (curr->child[left] == NULL || curr->child[right] == NULL) {
             // one child or no children
-            RedBlackNode* temp = curr->child[right] == NULL ? curr->child[left] : curr->child[right];
-            if (isRed(curr)) {
-                delete curr;
-                valid = true;
-            } else if (isRed(temp)) {
-                temp->color = BLACK;
-                delete temp;
-                valid = true;
-            }
-
+            RedBlackNode* temp = curr->child[left] == NULL ? curr->child[right] : curr->child[left];
+            delete curr;
             size -= 1;
             return temp;
         } else {

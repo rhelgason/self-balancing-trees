@@ -31,6 +31,7 @@ class BaseTests {
             test_one_child_remove();
             test_both_children_remove();
             test_includes();
+            test_large_tree();
             test_purge();
 
             test_tree_specific();
@@ -185,6 +186,31 @@ class BaseTests {
             assert(!tree.includes(57));
             assert(tree.includes(13));
             assert(tree.includes(-1));
+        }
+
+        void test_large_tree() {
+            // insert and remove large number of nodes
+            print_current_test(__func__);
+            T tree = createTree();
+            for (int i = 1; i <= 10000; i++) {
+                tree.insert(i);
+            }
+
+            assert(tree.isValid());
+            assert(tree.getSize() == 10000);
+            assert(*(tree.getMin()) == 1);
+            assert(*(tree.getMax()) == 10000);
+
+            tree.remove(1);
+            tree.remove(10000);
+            for (int i = 8500; i > 2000; i--) {
+                tree.remove(i);
+            }
+
+            assert(tree.isValid());
+            assert(tree.getSize() == 3498);
+            assert(*(tree.getMin()) == 2);
+            assert(*(tree.getMax()) == 9999);
         }
 
         void test_purge() {
@@ -495,6 +521,82 @@ class BaseTests {
             assert(tree.getHeight() == 4);
         }
 
+        void test_RedBlack_left_left_deletion() {
+            // self balancing left left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(0);
+            tree.insert(8);
+            tree.insert(-40);
+            tree.insert(-1);
+            tree.insert(-5668);
+            tree.insert(-472379);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
+
+            tree.remove(8);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_RedBlack_left_right_deletion() {
+            // self balancing left right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(175843);
+            tree.insert(578319290);
+            tree.insert(4827);
+            tree.insert(138467);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.remove(578319290);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+        }
+
+        void test_RedBlack_right_right_deletion() {
+            // self balancing right right case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(31);
+            tree.insert(8);
+            tree.insert(90);
+            tree.insert(58);
+            tree.insert(177);
+            tree.insert(200);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 4);
+
+            tree.remove(8);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+        }
+
+        void test_RedBlack_right_left_deletion() {
+            // self balancing right left case
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(11);
+            tree.insert(5);
+            tree.insert(66);
+            tree.insert(39);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 3);
+
+            tree.remove(5);
+
+            assert(tree.isValid());
+            assert(tree.getHeight() == 2);
+        }
+
         virtual ~BaseTests() {}
 };
 
@@ -566,6 +668,10 @@ class RedBlackTreeTests : public BaseTests<RedBlackTree> {
             test_RedBlack_left_right_insertion();
             test_RedBlack_right_right_insertion();
             test_RedBlack_right_left_insertion();
+            test_RedBlack_left_left_deletion();
+            test_RedBlack_left_right_deletion();
+            test_RedBlack_right_right_deletion();
+            test_RedBlack_right_left_deletion();
         }
 
     public:
