@@ -5,8 +5,8 @@ RedBlackNode* RedBlackTree::Node(int data) {
     RedBlackNode* temp = new RedBlackNode;
     temp->data = data;
     temp->color = RED;
-    temp->child[left] = NULL;
-    temp->child[right] = NULL;
+    temp->child[LEFT] = NULL;
+    temp->child[RIGHT] = NULL;
     return temp;
 }
 
@@ -44,13 +44,13 @@ int RedBlackTree::ensureRedBlackProperties(RedBlackNode* curr, bool &valid) {
         return 1;
     }
 
-    if (curr->color == RED && (isRed(curr->child[left]) || isRed(curr->child[right]))) {
+    if (curr->color == RED && (isRed(curr->child[LEFT]) || isRed(curr->child[RIGHT]))) {
         valid = false;
         return -1;
     }
 
-    int numLeft = ensureRedBlackProperties(curr->child[left], valid);
-    int numRight = ensureRedBlackProperties(curr->child[right], valid);
+    int numLeft = ensureRedBlackProperties(curr->child[LEFT], valid);
+    int numRight = ensureRedBlackProperties(curr->child[RIGHT], valid);
     if (numLeft != numRight) {
         valid = false;
     }
@@ -105,17 +105,17 @@ RedBlackNode* RedBlackTree::_remove(RedBlackNode* curr, int data, bool &valid) {
     }
 
     if (curr->data == data) {
-        if (curr->child[left] == NULL || curr->child[right] == NULL) {
+        if (curr->child[LEFT] == NULL || curr->child[RIGHT] == NULL) {
             // one child or no children
-            RedBlackNode* temp = curr->child[left] == NULL ? curr->child[right] : curr->child[left];
+            RedBlackNode* temp = curr->child[LEFT] == NULL ? curr->child[RIGHT] : curr->child[LEFT];
             delete curr;
             size -= 1;
             return temp;
         } else {
             // two children, get _inorder successor
-            RedBlackNode* temp = _getMin(curr->child[right]);
+            RedBlackNode* temp = _getMin(curr->child[RIGHT]);
             curr->data = temp->data;
-            curr->child[right] = _remove(curr->child[right], temp->data, valid);
+            curr->child[RIGHT] = _remove(curr->child[RIGHT], temp->data, valid);
         }
     }
 
@@ -134,7 +134,7 @@ RedBlackNode* RedBlackTree::removeFix(RedBlackNode* curr, bool i, bool &valid) {
     }
 
     if (sibling != NULL) {
-        if (!isRed(sibling->child[left]) && !isRed(sibling->child[right])) {
+        if (!isRed(sibling->child[LEFT]) && !isRed(sibling->child[RIGHT])) {
             // black sibling with two black children
             if (isRed(parent)) {
                 valid = true;
@@ -153,8 +153,8 @@ RedBlackNode* RedBlackTree::removeFix(RedBlackNode* curr, bool i, bool &valid) {
             }
 
             parent->color = parentColor;
-            parent->child[left]->color = BLACK;
-            parent->child[right]->color = BLACK;
+            parent->child[LEFT]->color = BLACK;
+            parent->child[RIGHT]->color = BLACK;
 
             if (isRedSibling) {
                 curr->child[i] = parent;
@@ -173,9 +173,9 @@ RedBlackNode* RedBlackTree::_find(RedBlackNode* curr, int data) {
     }
 
     if (data < curr->data) {
-        return _find(curr->child[left], data);
+        return _find(curr->child[LEFT], data);
     } else if (data > curr->data) {
-        return _find(curr->child[right], data);
+        return _find(curr->child[RIGHT], data);
     }
 
     return curr;
@@ -186,8 +186,8 @@ RedBlackNode* RedBlackTree::_purge(RedBlackNode* curr) {
         return NULL;
     }
 
-    _purge(curr->child[left]);
-    _purge(curr->child[right]);
+    _purge(curr->child[LEFT]);
+    _purge(curr->child[RIGHT]);
     delete curr;
     size -= 1;
     return NULL;
@@ -211,8 +211,8 @@ RedBlackNode* RedBlackTree::doubleRotate(RedBlackNode* curr, bool i) {
 
 void RedBlackTree::flipColors(RedBlackNode* curr) {
     curr->color = curr->color^1;
-    curr->child[left]->color = curr->child[left]->color^1;
-    curr->child[right]->color = curr->child[right]->color^1;
+    curr->child[LEFT]->color = curr->child[LEFT]->color^1;
+    curr->child[RIGHT]->color = curr->child[RIGHT]->color^1;
 }
 
 RedBlackNode* RedBlackTree::_getMin(RedBlackNode* curr) {
@@ -220,10 +220,10 @@ RedBlackNode* RedBlackTree::_getMin(RedBlackNode* curr) {
         return NULL;
     }
 
-    if (curr->child[left] == NULL) {
+    if (curr->child[LEFT] == NULL) {
         return curr;
     }
-    return _getMin(curr->child[left]);
+    return _getMin(curr->child[LEFT]);
 }
 
 RedBlackNode* RedBlackTree::_getMax(RedBlackNode* curr) {
@@ -231,10 +231,10 @@ RedBlackNode* RedBlackTree::_getMax(RedBlackNode* curr) {
         return NULL;
     }
 
-    if (curr->child[right] == NULL) {
+    if (curr->child[RIGHT] == NULL) {
         return curr;
     }
-    return _getMax(curr->child[right]);
+    return _getMax(curr->child[RIGHT]);
 }
 
 int RedBlackTree::_getHeight(RedBlackNode* curr) {
@@ -242,16 +242,16 @@ int RedBlackTree::_getHeight(RedBlackNode* curr) {
         return 0;
     }
 
-    return max(_getHeight(curr->child[left]), _getHeight(curr->child[right])) + 1;
+    return max(_getHeight(curr->child[LEFT]), _getHeight(curr->child[RIGHT])) + 1;
 }
 
 void RedBlackTree::_inorder(RedBlackNode* curr, int* &arr, int &i) {
     if (curr == NULL) {
         return;
     }
-    _inorder(curr->child[left], arr, i);
+    _inorder(curr->child[LEFT], arr, i);
     arr[i++] = curr->data;
-    _inorder(curr->child[right], arr, i);
+    _inorder(curr->child[RIGHT], arr, i);
 }
 
 /* PUBLIC FUNCTIONS */

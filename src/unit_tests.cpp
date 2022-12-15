@@ -3,6 +3,7 @@
 #include "BinarySearchTree.h"
 #include "AVLTree.h"
 #include "RedBlackTree.h"
+#include "SplayTree.h"
 using namespace std;
 
 template <typename T>
@@ -31,6 +32,7 @@ class BaseTests {
             test_one_child_remove();
             test_both_children_remove();
             test_includes();
+            test_includes_empty();
             test_large_tree();
             test_purge();
 
@@ -186,6 +188,14 @@ class BaseTests {
             assert(!tree.includes(57));
             assert(tree.includes(13));
             assert(tree.includes(-1));
+        }
+
+        void test_includes_empty() {
+            // check whether data exists in tree
+            print_current_test(__func__);
+            T tree = createTree();
+
+            assert(!tree.includes(8));
         }
 
         void test_large_tree() {
@@ -597,6 +607,107 @@ class BaseTests {
             assert(tree.getHeight() == 2);
         }
 
+        void test_splay_insertion_present() {
+            // most recent duplicate insert moves to root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(77);
+            tree.insert(-2);
+            tree.insert(0);
+            tree.insert(842);
+
+            assert(*(tree.getRoot()) == 842);
+
+            tree.insert(0);
+
+            assert(*(tree.getRoot()) == 0);
+        }
+
+        void test_splay_insertion_not_present() {
+            // most recent insert moves to root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(12);
+            tree.insert(19);
+            tree.insert(14);
+            tree.insert(27);
+
+            assert(*(tree.getRoot()) == 27);
+
+            tree.insert(19);
+
+            assert(*(tree.getRoot()) == 19);
+        }
+
+        void test_splay_deletion_present() {
+            // deletion does not change root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(475);
+            tree.insert(3);
+            tree.insert(893);
+            tree.insert(82);
+            tree.insert(31);
+
+            assert(*(tree.getRoot()) == 31);
+
+            tree.remove(893);
+            tree.remove(82);
+
+            assert(*(tree.getRoot()) == 475);
+        }
+
+        void test_splay_deletion_not_present() {
+            // deletion does not change root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(4939);
+            tree.insert(-77432);
+            tree.insert(893);
+            tree.insert(-2);
+            tree.insert(39);
+
+            assert(*(tree.getRoot()) == 39);
+
+            tree.remove(8);
+
+            assert(*(tree.getRoot()) == -2);
+        }
+
+        void test_splay_includes_present() {
+            // most recent search moves to root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(-8);
+            tree.insert(-123456);
+            tree.insert(0);
+            tree.insert(-44);
+            tree.insert(91);
+
+            assert(*(tree.getRoot()) == 91);
+
+            tree.includes(-44);
+
+            assert(*(tree.getRoot()) == -44);
+        }
+
+        void test_splay_includes_not_present() {
+            // nearest leaf to most recent search moves to root
+            print_current_test(__func__);
+            T tree = createTree();
+            tree.insert(12);
+            tree.insert(98);
+            tree.insert(4);
+            tree.insert(2);
+            tree.insert(761);
+
+            assert(*(tree.getRoot()) == 761);
+
+            tree.includes(8);
+
+            assert(*(tree.getRoot()) == 12);
+        }
+
         virtual ~BaseTests() {}
 };
 
@@ -679,6 +790,33 @@ class RedBlackTreeTests : public BaseTests<RedBlackTree> {
         ~RedBlackTreeTests() {}
 };
 
+template<class T>
+class SplayTreeTests : public BaseTests<SplayTree> {
+    protected:
+        string getName() override {
+            return "Splay Tree";
+        }
+
+        T createTree() override {
+            return SplayTree();
+        }
+
+        void test_tree_specific() override {
+            test_all_left_insertions(100);
+            test_all_right_insertions(100);
+            test_splay_insertion_present();
+            test_splay_insertion_not_present();
+            test_splay_deletion_present();
+            test_splay_deletion_not_present();
+            test_splay_includes_present();
+            test_splay_includes_not_present();
+        }
+
+    public:
+        SplayTreeTests() {}
+        ~SplayTreeTests() {}
+};
+
 int main(int argc, char *argv[]) {
     BinarySearchTreeTests<BinarySearchTree> tester1 = BinarySearchTreeTests<BinarySearchTree>();
     tester1.test_all();
@@ -688,5 +826,8 @@ int main(int argc, char *argv[]) {
 
     RedBlackTreeTests<RedBlackTree> tester3 = RedBlackTreeTests<RedBlackTree>();
     tester3.test_all();
+
+    SplayTreeTests<SplayTree> tester4 = SplayTreeTests<SplayTree>();
+    tester4.test_all();
     cout << endl;
 }

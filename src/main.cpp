@@ -6,6 +6,7 @@
 #include "BinarySearchTree.h"
 #include "AVLTree.h"
 #include "RedBlackTree.h"
+#include "SplayTree.h"
 using namespace std;
 
 #define NUM_TREES = 3;
@@ -101,6 +102,22 @@ class RedBlackTreeMetrics : public BaseMetrics<RedBlackTree> {
         ~RedBlackTreeMetrics() {}
 };
 
+template<class T>
+class SplayTreeMetrics : public BaseMetrics<SplayTree> {
+    protected:
+        string getName() override {
+            return "Splay Tree";
+        }
+
+        T createTree() override {
+            return SplayTree();
+        }
+
+    public:
+        SplayTreeMetrics() {}
+        ~SplayTreeMetrics() {}
+};
+
 void orderedInsert(int size, int step) {
     string filename = "out/ordered_insert.csv";
     cout << endl;
@@ -125,6 +142,8 @@ void orderedInsert(int size, int step) {
     tester2.calcInsert(arr, size, step, outfile);
     RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
     tester3.calcInsert(arr, size, step, outfile);
+    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
+    tester4.calcInsert(arr, size, step, outfile);
 
     delete [] arr;
     outfile.close();
@@ -157,6 +176,8 @@ void randomInsert(int size, int step) {
     tester2.calcInsert(arr, size, step, outfile);
     RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
     tester3.calcInsert(arr, size, step, outfile);
+    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
+    tester4.calcInsert(arr, size, step, outfile);
 
     delete [] arr;
     outfile.close();

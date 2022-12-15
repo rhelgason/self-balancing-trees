@@ -7,8 +7,8 @@ using namespace std;
 
 #define RED 0
 #define BLACK 1
-#define left 0
-#define right 1
+#define LEFT 0
+#define RIGHT 1
 
 typedef struct RedBlackNode {
     int data;

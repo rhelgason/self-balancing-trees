@@ -77,6 +77,13 @@ class Tree {
             return _getHeight(root);
         }
 
+        int* getRoot() {
+            if (root == NULL) {
+                return NULL;
+            }
+            return &(root->data);
+        }
+
         string toString() {
             int* arr = new int[size];
             int i = 0;
