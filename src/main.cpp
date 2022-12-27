@@ -124,18 +124,29 @@ class SplayTreeMetrics : public BaseMetrics<SplayTree> {
         ~SplayTreeMetrics() {}
 };
 
-void orderedInsert(int size, int step) {
-    string filename = "out/ordered_insert.csv";
+void startTest(int size, int step, string testName, string fileName, ofstream &outfile) {
+    outfile.open(fileName);
     cout << endl;
     cout << "=======================================================" << endl;
-    cout << " Comparing ordered insert..." << endl;
-    ofstream outfile;
-    outfile.open(filename);
+    cout << " Comparing " << testName << "..." << endl;
     outfile << ",";
     for (int i = step; i < size; i += step) {
         outfile << to_string(i) << ",";
     }
     outfile << endl;
+}
+
+void endTest(string fileName, ofstream &outfile) {
+    outfile.close();
+    cout << " Results can be found in " << fileName << "." << endl;
+    cout << "=======================================================" << endl;
+}
+
+void orderedInsert(int size, int step) {
+    string testName = "ordered insert";
+    string fileName = "out/ordered_insert.csv";
+    ofstream outfile;
+    startTest(size, step, testName, fileName, outfile);
 
     int* arr = new int[size];
     for (int i = 0; i < size; i++) {
@@ -152,23 +163,14 @@ void orderedInsert(int size, int step) {
     tester4.calcInsert(arr, size, step, outfile);
 
     delete [] arr;
-    outfile.close();
-    cout << " Results can be found in " << filename << "." << endl;
-    cout << "=======================================================" << endl;
+    endTest(fileName, outfile);
 }
 
 void randomInsert(int size, int step) {
-    string filename = "out/random_insert.csv";
-    cout << endl;
-    cout << "=======================================================" << endl;
-    cout << " Comparing random insert..." << endl;
+    string testName = "random insert";
+    string fileName = "out/random_insert.csv";
     ofstream outfile;
-    outfile.open(filename);
-    outfile << ",";
-    for (int i = step; i < size; i += step) {
-        outfile << to_string(i) << ",";
-    }
-    outfile << endl;
+    startTest(size, step, testName, fileName, outfile);
 
     int* arr = new int[size];
     for (int i = 0; i < size; i++) {
@@ -186,9 +188,7 @@ void randomInsert(int size, int step) {
     tester4.calcInsert(arr, size, step, outfile);
 
     delete [] arr;
-    outfile.close();
-    cout << " Results can be found in " << filename << "." << endl;
-    cout << "=======================================================" << endl;
+    endTest(fileName, outfile);
 }
 
 int main(int argc, char *argv[]) {
