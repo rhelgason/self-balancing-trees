@@ -57,6 +57,24 @@ class BaseMetrics {
             outfile << endl;
         }
 
+        void calcFind(int* arr, int size, int step, ofstream &outfile) {
+            startTest(outfile);
+            T tree = createTree();
+
+            for (int i = 0; i < size; i += step) {
+                for (int k = i; k < i + step; k++) {
+                    tree.insert(arr[k]);
+                }
+                startTime();
+                for (int k = 0; k < step; k++) {
+                    tree.includes(rand() % (i + step));
+                }
+                stopTime(step, outfile);
+            }
+
+            outfile << endl;
+        }
+
         virtual ~BaseMetrics() {}
 };
 
@@ -191,6 +209,30 @@ void randomInsert(int size, int step) {
     endTest(fileName, outfile);
 }
 
+void orderedInsertFind(int size, int step) {
+    string testName = "ordered insert find";
+    string fileName = "out/ordered_insert_find.csv";
+    ofstream outfile;
+    startTest(size, step, testName, fileName, outfile);
+
+    int* arr = new int[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = i;
+    }
+
+    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
+    tester1.calcFind(arr, size, step, outfile);
+    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
+    tester2.calcFind(arr, size, step, outfile);
+    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
+    tester3.calcFind(arr, size, step, outfile);
+    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
+    tester4.calcFind(arr, size, step, outfile);
+
+    delete [] arr;
+    endTest(fileName, outfile);
+}
+
 int main(int argc, char *argv[]) {
     // get command line arguments
     int size = DEFAULT_SIZE;
@@ -234,6 +276,7 @@ int main(int argc, char *argv[]) {
     if (functions == NULL) {
         orderedInsert(size, step);
         randomInsert(size, step);
+        orderedInsertFind(size, step);
     } else {
         char* function;
         function = strtok(functions, " ");
