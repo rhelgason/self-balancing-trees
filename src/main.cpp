@@ -2,6 +2,9 @@
 #include <fstream>
 #include <algorithm>
 #include <chrono>
+#include <unistd.h>
+#include <string>
+#include <map>
 
 #include "BinarySearchTree.h"
 #include "AVLTree.h"
@@ -9,7 +12,10 @@
 #include "SplayTree.h"
 using namespace std;
 
-#define NUM_TREES = 3;
+#define DEFAULT_SIZE 100000
+#define DEFAULT_STEP 500
+
+typedef void (*functionPtr) (int, int);
 
 template <typename T>
 class BaseMetrics {
@@ -186,11 +192,60 @@ void randomInsert(int size, int step) {
 }
 
 int main(int argc, char *argv[]) {
-    int size = 100000;
-    int step = 500;
+    // get command line arguments
+    int size = DEFAULT_SIZE;
+    int step = DEFAULT_STEP;
+    char* functions = NULL;
+    int c;
+    while ((c = getopt (argc, argv, "s:t:f:")) != -1) {
+        switch(c) {
+            case 's':
+                try {
+                    size = stoi(optarg);
+                } catch (exception &err) {
+                    cout << endl << "Encountered error on size: " << err.what() << endl;
+                    return 1;
+                }
+                break;
+            case 't':
+                try {
+                    step = stoi(optarg);
+                } catch (exception &err) {
+                    cout << endl << "Encountered error on step: " << err.what() << endl;
+                    return 1;
+                }
+                break;
+            case 'f':
+                functions = optarg;
+                break;
+            default:
+                cout << endl << "Unknown command line argument encountered." << endl;
+                break;
+        }
+    }
+    cout << endl << "Running tests with size " << size << " and step " << step << "." << endl;
 
-    orderedInsert(size, step);
-    randomInsert(size, step);
+    // define function map
+    // C++ does not support reflection, simple workaround
+    map<string, functionPtr> functionMap;
+    functionMap["orderedInsert"] = orderedInsert;
+    functionMap["randomInsert"] = randomInsert;
+
+    if (functions == NULL) {
+        orderedInsert(size, step);
+        randomInsert(size, step);
+    } else {
+        char* function;
+        function = strtok(functions, " ");
+        while (function != NULL) {
+            if (functionMap.count(function)) {
+                functionMap[function](size, step);
+            } else {
+                cout << endl << "Function " << function << " not found, skipping..." << endl;
+            }
+            function = strtok(NULL, " ");
+        }
+    }
     cout << endl;
 
     return 0;
