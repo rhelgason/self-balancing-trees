@@ -67,7 +67,7 @@ class BaseMetrics {
                 }
                 startTime();
                 for (int k = 0; k < step; k++) {
-                    tree.includes(rand() % (i + step));
+                    tree.includes(rand() % size);
                 }
                 stopTime(step, outfile);
             }
@@ -233,6 +233,31 @@ void orderedFind(int size, int step) {
     endTest(fileName, outfile);
 }
 
+void randomFind(int size, int step) {
+    string testName = "random find";
+    string fileName = "out/random_find.csv";
+    ofstream outfile;
+    startTest(size, step, testName, fileName, outfile);
+
+    int* arr = new int[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = i;
+    }
+    random_shuffle(arr, arr + size);
+
+    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
+    tester1.calcFind(arr, size, step, outfile);
+    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
+    tester2.calcFind(arr, size, step, outfile);
+    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
+    tester3.calcFind(arr, size, step, outfile);
+    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
+    tester4.calcFind(arr, size, step, outfile);
+
+    delete [] arr;
+    endTest(fileName, outfile);
+}
+
 int main(int argc, char *argv[]) {
     // get command line arguments
     int size = DEFAULT_SIZE;
@@ -273,11 +298,13 @@ int main(int argc, char *argv[]) {
     functionMap["orderedInsert"] = orderedInsert;
     functionMap["randomInsert"] = randomInsert;
     functionMap["orderedFind"] = orderedFind;
+    functionMap["randomFind"] = randomFind;
 
     if (functions == NULL) {
         orderedInsert(size, step);
         randomInsert(size, step);
         orderedFind(size, step);
+        randomFind(size, step);
     } else {
         char* function;
         function = strtok(functions, " ");
