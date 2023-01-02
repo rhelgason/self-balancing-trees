@@ -209,9 +209,9 @@ void randomInsert(int size, int step) {
     endTest(fileName, outfile);
 }
 
-void orderedInsertFind(int size, int step) {
-    string testName = "ordered insert find";
-    string fileName = "out/ordered_insert_find.csv";
+void orderedFind(int size, int step) {
+    string testName = "ordered find";
+    string fileName = "out/ordered_find.csv";
     ofstream outfile;
     startTest(size, step, testName, fileName, outfile);
 
@@ -272,11 +272,12 @@ int main(int argc, char *argv[]) {
     map<string, functionPtr> functionMap;
     functionMap["orderedInsert"] = orderedInsert;
     functionMap["randomInsert"] = randomInsert;
+    functionMap["orderedFind"] = orderedFind;
 
     if (functions == NULL) {
         orderedInsert(size, step);
         randomInsert(size, step);
-        orderedInsertFind(size, step);
+        orderedFind(size, step);
     } else {
         char* function;
         function = strtok(functions, " ");
