@@ -15,7 +15,18 @@ using namespace std;
 #define DEFAULT_SIZE 100000
 #define DEFAULT_STEP 500
 
-typedef void (*functionPtr) (int, int);
+enum MetricType {
+    INSERT,
+    FIND
+};
+
+string metricTypeToString(MetricType metricType) {
+    switch (metricType) {
+        case INSERT: return "insert";
+        case FIND: return "find";
+        default: throw invalid_argument("Unrecognized metric type.");
+    }
+};
 
 template <typename T>
 class BaseMetrics {
@@ -160,9 +171,10 @@ void endTest(string fileName, ofstream &outfile) {
     cout << "=======================================================" << endl;
 }
 
-void orderedInsert(int size, int step) {
-    string testName = "ordered insert";
-    string fileName = "out/ordered_insert.csv";
+void runMetric(int size, int step, bool ordered, MetricType metricType) {
+    string testName = (ordered ? "ordered " : "random ") + metricTypeToString(metricType);
+    string fileName = "out/" + testName + ".csv";
+    replace(fileName.begin(), fileName.end(), ' ', '_');
     ofstream outfile;
     startTest(size, step, testName, fileName, outfile);
 
@@ -170,89 +182,25 @@ void orderedInsert(int size, int step) {
     for (int i = 0; i < size; i++) {
         arr[i] = i;
     }
-
-    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
-    tester1.calcInsert(arr, size, step, outfile);
-    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
-    tester2.calcInsert(arr, size, step, outfile);
-    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
-    tester3.calcInsert(arr, size, step, outfile);
-    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
-    tester4.calcInsert(arr, size, step, outfile);
-
-    delete [] arr;
-    endTest(fileName, outfile);
-}
-
-void randomInsert(int size, int step) {
-    string testName = "random insert";
-    string fileName = "out/random_insert.csv";
-    ofstream outfile;
-    startTest(size, step, testName, fileName, outfile);
-
-    int* arr = new int[size];
-    for (int i = 0; i < size; i++) {
-        arr[i] = i;
-    }
-    random_shuffle(arr, arr + size);
-
-    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
-    tester1.calcInsert(arr, size, step, outfile);
-    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
-    tester2.calcInsert(arr, size, step, outfile);
-    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
-    tester3.calcInsert(arr, size, step, outfile);
-    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
-    tester4.calcInsert(arr, size, step, outfile);
-
-    delete [] arr;
-    endTest(fileName, outfile);
-}
-
-void orderedFind(int size, int step) {
-    string testName = "ordered find";
-    string fileName = "out/ordered_find.csv";
-    ofstream outfile;
-    startTest(size, step, testName, fileName, outfile);
-
-    int* arr = new int[size];
-    for (int i = 0; i < size; i++) {
-        arr[i] = i;
+    if (!ordered) {
+        random_shuffle(arr, arr + size);
     }
 
-    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
-    tester1.calcFind(arr, size, step, outfile);
-    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
-    tester2.calcFind(arr, size, step, outfile);
-    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
-    tester3.calcFind(arr, size, step, outfile);
-    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
-    tester4.calcFind(arr, size, step, outfile);
-
-    delete [] arr;
-    endTest(fileName, outfile);
-}
-
-void randomFind(int size, int step) {
-    string testName = "random find";
-    string fileName = "out/random_find.csv";
-    ofstream outfile;
-    startTest(size, step, testName, fileName, outfile);
-
-    int* arr = new int[size];
-    for (int i = 0; i < size; i++) {
-        arr[i] = i;
+    switch (metricType) {
+        case INSERT:
+            BinarySearchTreeMetrics<BinarySearchTree>().calcInsert(arr, size, step, outfile);
+            AVLTreeMetrics<AVLTree>().calcInsert(arr, size, step, outfile);
+            RedBlackTreeMetrics<RedBlackTree>().calcInsert(arr, size, step, outfile);
+            SplayTreeMetrics<SplayTree>().calcInsert(arr, size, step, outfile);
+            break;
+        case FIND:
+            BinarySearchTreeMetrics<BinarySearchTree>().calcFind(arr, size, step, outfile);
+            AVLTreeMetrics<AVLTree>().calcFind(arr, size, step, outfile);
+            RedBlackTreeMetrics<RedBlackTree>().calcFind(arr, size, step, outfile);
+            SplayTreeMetrics<SplayTree>().calcFind(arr, size, step, outfile);
+            break;
+        default: throw invalid_argument("Unrecognized metric type.");
     }
-    random_shuffle(arr, arr + size);
-
-    BinarySearchTreeMetrics<BinarySearchTree> tester1 = BinarySearchTreeMetrics<BinarySearchTree>();
-    tester1.calcFind(arr, size, step, outfile);
-    AVLTreeMetrics<AVLTree> tester2 = AVLTreeMetrics<AVLTree>();
-    tester2.calcFind(arr, size, step, outfile);
-    RedBlackTreeMetrics<RedBlackTree> tester3 = RedBlackTreeMetrics<RedBlackTree>();
-    tester3.calcFind(arr, size, step, outfile);
-    SplayTreeMetrics<SplayTree> tester4 = SplayTreeMetrics<SplayTree>();
-    tester4.calcFind(arr, size, step, outfile);
 
     delete [] arr;
     endTest(fileName, outfile);
@@ -294,23 +242,26 @@ int main(int argc, char *argv[]) {
 
     // define function map
     // C++ does not support reflection, simple workaround
-    map<string, functionPtr> functionMap;
-    functionMap["orderedInsert"] = orderedInsert;
-    functionMap["randomInsert"] = randomInsert;
-    functionMap["orderedFind"] = orderedFind;
-    functionMap["randomFind"] = randomFind;
+    map<string, tuple<bool, MetricType>> functionMap;
+    functionMap["orderedInsert"] = make_tuple(true, INSERT);
+    functionMap["randomInsert"] = make_tuple(false, INSERT);
+    functionMap["orderedFind"] = make_tuple(true, FIND);
+    functionMap["randomFind"] = make_tuple(false, FIND);
 
     if (functions == NULL) {
-        orderedInsert(size, step);
-        randomInsert(size, step);
-        orderedFind(size, step);
-        randomFind(size, step);
+        map<string, tuple<bool, MetricType>>::iterator it = functionMap.begin();
+        while (it != functionMap.end()) {
+            tuple<bool, MetricType> params = it->second;
+            runMetric(size, step, get<0>(params), get<1>(params));
+            it++;
+        }
     } else {
         char* function;
         function = strtok(functions, " ");
         while (function != NULL) {
             if (functionMap.count(function)) {
-                functionMap[function](size, step);
+                tuple<bool, MetricType> params = functionMap[function];
+                runMetric(size, step, get<0>(params), get<1>(params));
             } else {
                 cout << endl << "Function " << function << " not found, skipping..." << endl;
             }
