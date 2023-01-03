@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <unistd.h>
-#include <string>
+#include <string.h>
 #include <map>
 
 #include "BinarySearchTree.h"
@@ -26,7 +26,7 @@ string metricTypeToString(MetricType metricType) {
         case FIND: return "find";
         default: throw invalid_argument("Unrecognized metric type.");
     }
-};
+}
 
 template <typename T>
 class BaseMetrics {
