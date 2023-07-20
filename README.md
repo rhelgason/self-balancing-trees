@@ -6,7 +6,7 @@ Implementations and comparisons of various self-balancing trees.
 ### [Binary Search Tree](https://en.wikipedia.org/wiki/Binary_search_tree)
 
 <p align="center">
-  <img src="https://github.com/rhelgason/self-balancing-trees/blob/master/img/binary_search_tree.PNG" alt="binary search tree"/>
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/binary_search_tree.png" alt="binary search tree"/>
 </p>
 
 This is the most basic binary tree. The key of each tree node is greater than all the keys in the node's left subtree and less than all the keys in the node's right subtree. No balancing is done during insertion or deletion, so this tree is generally inefficient when using larger data sets.
@@ -14,7 +14,7 @@ This is the most basic binary tree. The key of each tree node is greater than al
 ### [AVL Tree](https://en.wikipedia.org/wiki/AVL_tree)
 
 <p align="center">
-  <img src="https://github.com/rhelgason/self-balancing-trees/blob/master/img/avl_tree.PNG" alt="avl tree"/>
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/avl_tree.png" alt="avl tree"/>
 </p>
 
 For every tree node in an AVL tree, the height of its two subtrees differ by no more than one. If this property ever becomes false during insertion or deletion, a series of rotations are performed to make the property true again. AVL trees are generally often slower during insertions and deletions because they perform ensure such strict balancing, but this guarantees optimal performance when searching for tree nodes.
@@ -22,7 +22,7 @@ For every tree node in an AVL tree, the height of its two subtrees differ by no 
 ### [Red-Black Tree](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
 
 <p align="center">
-  <img src="https://github.com/rhelgason/self-balancing-trees/blob/master/img/red_black_tree.PNG" alt="red-black tree"/>
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/red_black_tree.png" alt="red-black tree"/>
 </p>
 
 Every node in a red-black tree also contains a single bit, representing its color, that helps with balancing the tree. The following properties always hold true:
