@@ -38,6 +38,21 @@ Red-black trees are slightly faster during insertions and deletions than AVL tre
 
 Splay trees balance themselves by moving recently accessed tree nodes nearer to the root. This allows splay trees to perform very well in cases where nodes need to be consistently accessed and suffer in cases where nodes are randomly accessed. For example, a splay tree could very effectively be used as a sort of caching algorithm.
 
+### Time Complexities
+
+Each of these tree implementations are binary trees, so the average time complexity for their search, insertion, and deletion functions are always Θ(log n). However, the worst case time complexities of each tree implementation vary slightly:
+
+<p align="center">
+  
+|               | Search    | Insertion | Deletion  |
+| :------------ | :-------- | :-------- | :-------- |
+| Binary Search | O(n)      | O(n)      | O(n)      |
+| AVL           | O(log n)  | O(log n)  | O(log n)  |
+| Red-black     | O(log n)  | O(log n)  | O(log n)  |
+| Splay         | O(n)      | O(n)      | O(n)      |
+
+</p>
+
 ## Findings (WIP)
 
 ### Ordered Insert: insert keys in numeric order
