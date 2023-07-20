@@ -90,6 +90,9 @@ RedBlackNode* RedBlackTree::insertFix(RedBlackNode* curr, bool i) {
 }
 
 RedBlackNode* RedBlackTree::_remove(RedBlackNode* curr, int data) {
+    // ignore unused param for method override
+    (void)curr;
+
     bool valid = false;
     root = _remove(root, data, valid);
     if (root != NULL) {

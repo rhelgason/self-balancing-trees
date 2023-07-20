@@ -818,6 +818,10 @@ class SplayTreeTests : public BaseTests<SplayTree> {
 };
 
 int main(int argc, char *argv[]) {
+    // ignore unused params
+    (void)argc;
+    (void)argv;
+
     BinarySearchTreeTests<BinarySearchTree> tester1 = BinarySearchTreeTests<BinarySearchTree>();
     tester1.test_all();
 

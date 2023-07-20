@@ -48,13 +48,13 @@ class BaseMetrics {
         virtual T createTree() = 0;
 
     public:
-        void startTest(ofstream &outfile) {
+        void startMetricTest(ofstream &outfile) {
             cout << "   Running test on " << getName() << "..." << endl;
             outfile << getName() << ",";
         }
 
         void calcInsert(int* arr, int size, int step, ofstream &outfile) {
-            startTest(outfile);
+            startMetricTest(outfile);
             T tree = createTree();
 
             for (int i = 0; i < size; i += step) {
@@ -69,7 +69,7 @@ class BaseMetrics {
         }
 
         void calcFind(int* arr, int size, int step, ofstream &outfile) {
-            startTest(outfile);
+            startMetricTest(outfile);
             T tree = createTree();
 
             for (int i = 0; i < size; i += step) {
@@ -159,7 +159,7 @@ void startTest(int size, int step, string testName, string fileName, ofstream &o
     cout << "=======================================================" << endl;
     cout << " Comparing " << testName << "..." << endl;
     outfile << ",";
-    for (int i = step; i < size; i += step) {
+    for (int i = step; i <= size; i += step) {
         outfile << to_string(i) << ",";
     }
     outfile << endl;
