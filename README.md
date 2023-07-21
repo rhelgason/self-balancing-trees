@@ -43,7 +43,7 @@ Splay trees balance themselves by moving recently accessed tree nodes nearer to 
 Each of these tree implementations are binary trees, so the average time complexity for their search, insertion, and deletion functions are always Θ(log n). However, the worst case time complexities of each tree implementation vary slightly:
 
 <p align="center">
-  
+
 |               | Search    | Insertion | Deletion  |
 | :------------ | :-------- | :-------- | :-------- |
 | Binary Search | O(n)      | O(n)      | O(n)      |
@@ -76,4 +76,4 @@ The program provides a main entrypoint for running all of the metrics on each of
 
 Sample usage: `./bin/main -s 1000 -t 50 -f "orderedInsert randomInsert"`
 
-A Makefile has also been included in the top directory with a few basic commands. To build all of the files for running the metrics, use the default `make build` command. Run all of the metrics with default size and step using the `make run` command. To run all of the unit tests, use the `make test` command. Finally, all of the executable files created during compilation can be removed using `make clean`.
+A Makefile has also been included in the top directory with a few basic commands. To build all of the files for running the metrics, use the default `make build` command. Run all of the metrics with default size and step using the `make run` command. To build all of the unit tests, use the `make test` command.  To run all of the unit tests, use the `make runTest` command. Finally, all of the executable files created during compilation can be removed using `make clean`.

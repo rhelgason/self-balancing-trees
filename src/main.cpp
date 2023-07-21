@@ -45,7 +45,6 @@ class BaseMetrics {
 
     protected:
         virtual string getName() = 0;
-        virtual T createTree() = 0;
 
     public:
         void startMetricTest(ofstream &outfile) {
@@ -55,7 +54,7 @@ class BaseMetrics {
 
         void calcInsert(int* arr, int size, int step, ofstream &outfile) {
             startMetricTest(outfile);
-            T tree = createTree();
+            T tree;
 
             for (int i = 0; i < size; i += step) {
                 startTime();
@@ -70,7 +69,7 @@ class BaseMetrics {
 
         void calcFind(int* arr, int size, int step, ofstream &outfile) {
             startMetricTest(outfile);
-            T tree = createTree();
+            T tree;
 
             for (int i = 0; i < size; i += step) {
                 for (int k = i; k < i + step; k++) {
@@ -96,10 +95,6 @@ class BinarySearchTreeMetrics : public BaseMetrics<BinarySearchTree> {
             return "Binary Search Tree";
         }
 
-        T createTree() override {
-            return BinarySearchTree();
-        }
-
     public:
         BinarySearchTreeMetrics() {}
         ~BinarySearchTreeMetrics() {}
@@ -110,10 +105,6 @@ class AVLTreeMetrics : public BaseMetrics<AVLTree> {
     protected:
         string getName() override {
             return "AVL Tree";
-        }
-
-        T createTree() override {
-            return AVLTree();
         }
 
     public:
@@ -128,10 +119,6 @@ class RedBlackTreeMetrics : public BaseMetrics<RedBlackTree> {
             return "Red Black Tree";
         }
 
-        T createTree() override {
-            return RedBlackTree();
-        }
-
     public:
         RedBlackTreeMetrics() {}
         ~RedBlackTreeMetrics() {}
@@ -142,10 +129,6 @@ class SplayTreeMetrics : public BaseMetrics<SplayTree> {
     protected:
         string getName() override {
             return "Splay Tree";
-        }
-
-        T createTree() override {
-            return SplayTree();
         }
 
     public:

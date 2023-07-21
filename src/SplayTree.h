@@ -13,6 +13,7 @@ typedef struct SplayNode {
 
 class SplayTree : public Tree<SplayNode> {
     private:
+        SplayNode* _deepCopy(SplayNode* curr);
         SplayNode* Node(int data);
 
         bool _isValid(SplayNode* root);
@@ -39,6 +40,8 @@ class SplayTree : public Tree<SplayNode> {
         void insert(int data);
         void remove(int data);
 
+        SplayTree() {};
+        SplayTree(SplayTree& tree);
         ~SplayTree();
 };
 

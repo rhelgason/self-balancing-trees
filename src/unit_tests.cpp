@@ -10,7 +10,6 @@ template <typename T>
 class BaseTests {
     protected:
         virtual string getName() = 0;
-        virtual T createTree() = 0;
         virtual void test_tree_specific() = 0;
 
     public:
@@ -35,6 +34,7 @@ class BaseTests {
             test_includes_empty();
             test_large_tree();
             test_purge();
+            test_deep_copy();
 
             test_tree_specific();
 
@@ -45,7 +45,7 @@ class BaseTests {
         void test_empty_tree() {
             // instantiate empty tree
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
 
             assert(tree.isValid());
             assert(tree.getSize() == 0);
@@ -57,7 +57,7 @@ class BaseTests {
         void test_insert() {
             // insert single node
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(5);
 
             assert(tree.isValid());
@@ -78,7 +78,7 @@ class BaseTests {
         void test_to_string() {
             // test sorted array
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(10);
             tree.insert(7);
             tree.insert(19);
@@ -93,7 +93,7 @@ class BaseTests {
         void test_get_min() {
             // get minimum on empty and non-empty tree
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
 
             assert(tree.getMin() == NULL);
 
@@ -107,7 +107,7 @@ class BaseTests {
         void test_get_max() {
             // get maximum on empty and non-empty tree
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
 
             assert(tree.getMax() == NULL);
 
@@ -121,7 +121,7 @@ class BaseTests {
         void test_remove() {
             // remove non-existent and existent node
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(10);
             tree.remove(8);
 
@@ -142,7 +142,7 @@ class BaseTests {
         void test_one_child_remove() {
             // remove node with one child
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(10);
             tree.insert(12);
             tree.remove(12);
@@ -162,7 +162,7 @@ class BaseTests {
         void test_both_children_remove() {
             // remove node with two children
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(10);
             tree.insert(12);
             tree.insert(11);
@@ -178,7 +178,7 @@ class BaseTests {
         void test_includes() {
             // check whether data exists in tree
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(48);
             tree.insert(99);
             tree.insert(2);
@@ -193,7 +193,7 @@ class BaseTests {
         void test_includes_empty() {
             // check whether data exists in tree
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
 
             assert(!tree.includes(8));
         }
@@ -201,7 +201,7 @@ class BaseTests {
         void test_large_tree() {
             // insert and remove large number of nodes
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 1; i <= 10000; i++) {
                 tree.insert(i);
             }
@@ -226,7 +226,7 @@ class BaseTests {
         void test_purge() {
             // ensure tree empties
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(48);
             tree.insert(99);
             tree.insert(2);
@@ -241,10 +241,28 @@ class BaseTests {
             assert(tree.getMax() == NULL);
         }
 
+        void test_deep_copy() {
+            // ensure tree empties
+            print_current_test(__func__);
+            T tree;
+            tree.insert(13);
+            tree.insert(50);
+            tree.insert(-2);
+            tree.insert(1);
+            tree.insert(-1143);
+            T copyTree(tree);
+
+            assert(copyTree.isValid());
+            assert(copyTree.getSize() == tree.getSize());
+            assert(copyTree.getHeight() == tree.getHeight());
+            assert(*(copyTree.getMin()) == *(tree.getMin()));
+            assert(*(copyTree.getMax()) == *(tree.getMax()));
+        }
+
         void test_all_left_insertions(int height) {
             // repeatedly left insert
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 99; i >= 0; i--) {
                 tree.insert(i);
             }
@@ -259,7 +277,7 @@ class BaseTests {
         void test_all_right_insertions(int height) {
             // repeatedly right insert
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 0; i < 100; i++) {
                 tree.insert(i);
             }
@@ -274,7 +292,7 @@ class BaseTests {
         void test_AVL_left_left_insertion() {
             // self balancing left left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(34);
             tree.insert(234);
             tree.insert(2);
@@ -293,7 +311,7 @@ class BaseTests {
         void test_AVL_left_right_insertion() {
             // self balancing left right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(55);
             tree.insert(87);
             tree.insert(32);
@@ -312,7 +330,7 @@ class BaseTests {
         void test_AVL_right_right_insertion() {
             // self balancing right right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(-10);
             tree.insert(-66);
             tree.insert(0);
@@ -331,7 +349,7 @@ class BaseTests {
         void test_AVL_right_left_insertion() {
             // self balancing right left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(-953);
             tree.insert(-2270);
             tree.insert(-477);
@@ -350,7 +368,7 @@ class BaseTests {
         void test_AVL_left_left_deletion() {
             // self balancing left left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 0; i < 15; i++) {
                 tree.insert(i);
             }
@@ -378,7 +396,7 @@ class BaseTests {
         void test_AVL_left_right_deletion() {
             // self balancing left right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 0; i < 15; i++) {
                 tree.insert(i);
             }
@@ -406,7 +424,7 @@ class BaseTests {
         void test_AVL_right_right_deletion() {
             // self balancing right right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 0; i < 15; i++) {
                 tree.insert(i);
             }
@@ -434,7 +452,7 @@ class BaseTests {
         void test_AVL_right_left_deletion() {
             // self balancing right left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             for (int i = 0; i < 15; i++) {
                 tree.insert(i);
             }
@@ -462,7 +480,7 @@ class BaseTests {
         void test_RedBlack_left_left_insertion() {
             // self balancing left left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(3);
             tree.insert(10);
 
@@ -478,7 +496,7 @@ class BaseTests {
         void test_RedBlack_left_right_insertion() {
             // self balancing left right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(61);
             tree.insert(4);
             tree.insert(88);
@@ -498,7 +516,7 @@ class BaseTests {
         void test_RedBlack_right_right_insertion() {
             // self balancing right right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(0);
             tree.insert(-57);
 
@@ -514,7 +532,7 @@ class BaseTests {
         void test_RedBlack_right_left_insertion() {
             // self balancing right left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(55);
             tree.insert(87);
             tree.insert(32);
@@ -534,7 +552,7 @@ class BaseTests {
         void test_RedBlack_left_left_deletion() {
             // self balancing left left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(0);
             tree.insert(8);
             tree.insert(-40);
@@ -554,7 +572,7 @@ class BaseTests {
         void test_RedBlack_left_right_deletion() {
             // self balancing left right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(175843);
             tree.insert(578319290);
             tree.insert(4827);
@@ -572,7 +590,7 @@ class BaseTests {
         void test_RedBlack_right_right_deletion() {
             // self balancing right right case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(31);
             tree.insert(8);
             tree.insert(90);
@@ -592,7 +610,7 @@ class BaseTests {
         void test_RedBlack_right_left_deletion() {
             // self balancing right left case
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(11);
             tree.insert(5);
             tree.insert(66);
@@ -610,102 +628,102 @@ class BaseTests {
         void test_splay_insertion_present() {
             // most recent duplicate insert moves to root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(77);
             tree.insert(-2);
             tree.insert(0);
             tree.insert(842);
 
-            assert(*(tree.getRoot()) == 842);
+            assert(*(tree.getRootVal()) == 842);
 
             tree.insert(0);
 
-            assert(*(tree.getRoot()) == 0);
+            assert(*(tree.getRootVal()) == 0);
         }
 
         void test_splay_insertion_not_present() {
             // most recent insert moves to root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(12);
             tree.insert(19);
             tree.insert(14);
             tree.insert(27);
 
-            assert(*(tree.getRoot()) == 27);
+            assert(*(tree.getRootVal()) == 27);
 
             tree.insert(19);
 
-            assert(*(tree.getRoot()) == 19);
+            assert(*(tree.getRootVal()) == 19);
         }
 
         void test_splay_deletion_present() {
             // deletion does not change root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(475);
             tree.insert(3);
             tree.insert(893);
             tree.insert(82);
             tree.insert(31);
 
-            assert(*(tree.getRoot()) == 31);
+            assert(*(tree.getRootVal()) == 31);
 
             tree.remove(893);
             tree.remove(82);
 
-            assert(*(tree.getRoot()) == 475);
+            assert(*(tree.getRootVal()) == 475);
         }
 
         void test_splay_deletion_not_present() {
             // deletion does not change root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(4939);
             tree.insert(-77432);
             tree.insert(893);
             tree.insert(-2);
             tree.insert(39);
 
-            assert(*(tree.getRoot()) == 39);
+            assert(*(tree.getRootVal()) == 39);
 
             tree.remove(8);
 
-            assert(*(tree.getRoot()) == -2);
+            assert(*(tree.getRootVal()) == -2);
         }
 
         void test_splay_includes_present() {
             // most recent search moves to root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(-8);
             tree.insert(-123456);
             tree.insert(0);
             tree.insert(-44);
             tree.insert(91);
 
-            assert(*(tree.getRoot()) == 91);
+            assert(*(tree.getRootVal()) == 91);
 
             tree.includes(-44);
 
-            assert(*(tree.getRoot()) == -44);
+            assert(*(tree.getRootVal()) == -44);
         }
 
         void test_splay_includes_not_present() {
             // nearest leaf to most recent search moves to root
             print_current_test(__func__);
-            T tree = createTree();
+            T tree;
             tree.insert(12);
             tree.insert(98);
             tree.insert(4);
             tree.insert(2);
             tree.insert(761);
 
-            assert(*(tree.getRoot()) == 761);
+            assert(*(tree.getRootVal()) == 761);
 
             tree.includes(8);
 
-            assert(*(tree.getRoot()) == 12);
+            assert(*(tree.getRootVal()) == 12);
         }
 
         virtual ~BaseTests() {}
@@ -716,10 +734,6 @@ class BinarySearchTreeTests : public BaseTests<BinarySearchTree> {
     protected:
         string getName() override {
             return "Binary Search Tree";
-        }
-
-        T createTree() override {
-            return BinarySearchTree();
         }
 
         void test_tree_specific() override {
@@ -737,10 +751,6 @@ class AVLTreeTests : public BaseTests<AVLTree> {
     protected:
         string getName() override {
             return "AVL Tree";
-        }
-
-        T createTree() override {
-            return AVLTree();
         }
 
         void test_tree_specific() override {
@@ -768,10 +778,6 @@ class RedBlackTreeTests : public BaseTests<RedBlackTree> {
             return "Red Black Tree";
         }
 
-        T createTree() override {
-            return RedBlackTree();
-        }
-
         void test_tree_specific() override {
             test_all_left_insertions(11);
             test_all_right_insertions(11);
@@ -795,10 +801,6 @@ class SplayTreeTests : public BaseTests<SplayTree> {
     protected:
         string getName() override {
             return "Splay Tree";
-        }
-
-        T createTree() override {
-            return SplayTree();
         }
 
         void test_tree_specific() override {

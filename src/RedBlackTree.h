@@ -18,6 +18,7 @@ typedef struct RedBlackNode {
 
 class RedBlackTree : public Tree<RedBlackNode> {
     private:
+        RedBlackNode* _deepCopy(RedBlackNode* curr);
         RedBlackNode* Node(int data);
 
         bool _isValid(RedBlackNode* root);
@@ -48,6 +49,8 @@ class RedBlackTree : public Tree<RedBlackNode> {
         // basic functions
         void insert(int data);
 
+        RedBlackTree() {};
+        RedBlackTree(RedBlackTree& tree);
         ~RedBlackTree();
 };
 

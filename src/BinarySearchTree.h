@@ -13,6 +13,7 @@ typedef struct BinarySearchNode {
 
 class BinarySearchTree : public Tree<BinarySearchNode> {
     private:
+        BinarySearchNode* _deepCopy(BinarySearchNode* curr);
         BinarySearchNode* Node(int data);
 
         bool _isValid(BinarySearchNode* root);
@@ -30,6 +31,8 @@ class BinarySearchTree : public Tree<BinarySearchNode> {
         void _inorder(BinarySearchNode* curr, int* &arr, int &i);
 
     public:
+        BinarySearchTree() {};
+        BinarySearchTree(BinarySearchTree& tree);
         ~BinarySearchTree();
 };
 

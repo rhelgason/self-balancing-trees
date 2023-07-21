@@ -1,6 +1,18 @@
 #include "BinarySearchTree.h"
 
 /* PRIVATE FUNCTIONS */
+BinarySearchNode* BinarySearchTree::_deepCopy(BinarySearchNode* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
+    BinarySearchNode* temp = new BinarySearchNode;
+    temp->data = curr->data;
+    temp->left = _deepCopy(curr->left);
+    temp->right = _deepCopy(curr->right);
+    return temp;
+}
+
 BinarySearchNode* BinarySearchTree::Node(int data) {
     BinarySearchNode* temp = new BinarySearchNode;
     temp->data = data;
@@ -127,6 +139,11 @@ void BinarySearchTree::_inorder(BinarySearchNode* curr, int* &arr, int &i) {
 }
 
 /* PUBLIC FUNCTIONS */
+BinarySearchTree::BinarySearchTree(BinarySearchTree& tree) {
+    root = _deepCopy(tree.getRoot());
+    size = tree.getSize();
+}
+
 BinarySearchTree::~BinarySearchTree() {
     purge();
 }

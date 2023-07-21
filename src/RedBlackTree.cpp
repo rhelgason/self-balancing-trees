@@ -1,6 +1,19 @@
 #include "RedBlackTree.h"
 
 /* PRIVATE FUNCTIONS */
+RedBlackNode* RedBlackTree::_deepCopy(RedBlackNode* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
+    RedBlackNode* temp = new RedBlackNode;
+    temp->data = curr->data;
+    temp->color = curr->color;
+    temp->child[LEFT] = _deepCopy(curr->child[LEFT]);
+    temp->child[RIGHT] = _deepCopy(curr->child[RIGHT]);
+    return temp;
+}
+
 RedBlackNode* RedBlackTree::Node(int data) {
     RedBlackNode* temp = new RedBlackNode;
     temp->data = data;
@@ -261,6 +274,11 @@ void RedBlackTree::_inorder(RedBlackNode* curr, int* &arr, int &i) {
 void RedBlackTree::insert(int data) {
     root = _insert(root, data);
     root->color = BLACK;
+}
+
+RedBlackTree::RedBlackTree(RedBlackTree& tree) {
+    root = _deepCopy(tree.getRoot());
+    size = tree.getSize();
 }
 
 RedBlackTree::~RedBlackTree() {

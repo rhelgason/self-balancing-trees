@@ -1,6 +1,18 @@
 #include "SplayTree.h"
 
 /* PRIVATE FUNCTIONS */
+SplayNode* SplayTree::_deepCopy(SplayNode* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
+    SplayNode* temp = new SplayNode;
+    temp->data = curr->data;
+    temp->left = _deepCopy(curr->left);
+    temp->right = _deepCopy(curr->right);
+    return temp;
+}
+
 SplayNode* SplayTree::Node(int data) {
     SplayNode* temp = new SplayNode;
     temp->data = data;
@@ -187,6 +199,11 @@ void SplayTree::insert(int data) {
 void SplayTree::remove(int data) {
     root = splay(root, data);
     root = _remove(root, data);
+}
+
+SplayTree::SplayTree(SplayTree& tree) {
+    root = _deepCopy(tree.getRoot());
+    size = tree.getSize();
 }
 
 SplayTree::~SplayTree() {

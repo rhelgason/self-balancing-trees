@@ -11,6 +11,9 @@ class Tree {
         T* root;
         int size;
 
+        // deep copy constructor
+        virtual T* _deepCopy(T* curr) = 0;
+
         virtual T* Node(int data) = 0;
         virtual bool _isValid(T* curr) = 0;
 
@@ -78,7 +81,11 @@ class Tree {
             return _getHeight(root);
         }
 
-        int* getRoot() {
+        T* getRoot() {
+            return root;
+        }
+
+        int* getRootVal() {
             if (root == NULL) {
                 return NULL;
             }

@@ -14,6 +14,7 @@ typedef struct AVLNode {
 
 class AVLTree : public Tree<AVLNode> {
     private:
+        AVLNode* _deepCopy(AVLNode* curr);
         AVLNode* Node(int data);
 
         bool _isValid(AVLNode* root);
@@ -38,6 +39,8 @@ class AVLTree : public Tree<AVLNode> {
         void _inorder(AVLNode* curr, int* &arr, int &i);
 
     public:
+        AVLTree() {};
+        AVLTree(AVLTree& tree);
         ~AVLTree();
 };
 

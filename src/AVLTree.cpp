@@ -1,6 +1,19 @@
 #include "AVLTree.h"
 
 /* PRIVATE FUNCTIONS */
+AVLNode* AVLTree::_deepCopy(AVLNode* curr) {
+    if (curr == NULL) {
+        return NULL;
+    }
+
+    AVLNode* temp = new AVLNode;
+    temp->data = curr->data;
+    temp->height = curr->height;
+    temp->left = _deepCopy(curr->left);
+    temp->right = _deepCopy(curr->right);
+    return temp;
+}
+
 AVLNode* AVLTree::Node(int data) {
     AVLNode* temp = new AVLNode;
     temp->data = data;
@@ -224,6 +237,11 @@ void AVLTree::_inorder(AVLNode* curr, int* &arr, int &i) {
 }
 
 /* PUBLIC FUNCTIONS */
+AVLTree::AVLTree(AVLTree& tree) {
+    root = _deepCopy(tree.getRoot());
+    size = tree.getSize();
+}
+
 AVLTree::~AVLTree() {
     purge();
 }
