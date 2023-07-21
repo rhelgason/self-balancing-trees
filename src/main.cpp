@@ -17,12 +17,14 @@ using namespace std;
 
 enum MetricType {
     INSERT,
+    DELETE,
     FIND
 };
 
 string metricTypeToString(MetricType metricType) {
     switch (metricType) {
         case INSERT: return "insert";
+        case DELETE: return "delete";
         case FIND: return "find";
         default: throw invalid_argument("Unrecognized metric type.");
     }
@@ -60,6 +62,25 @@ class BaseMetrics {
                 startTime();
                 for (int k = i; k < i + step; k++) {
                     tree.insert(arr[k]);
+                }
+                stopTime(step, outfile);
+            }
+
+            outfile << endl;
+        }
+
+        void calcDelete(int* arr, int size, int step, ofstream &outfile) {
+            startMetricTest(outfile);
+            T tree;
+
+            for (int i = 0; i < size; i += step) {
+                for (int k = i; k < i + step; k++) {
+                    tree.insert(arr[k]);
+                }
+                T copyTree(tree);
+                startTime();
+                for (int k = 0; k < step; k++) {
+                    copyTree.remove(rand() % size);
                 }
                 stopTime(step, outfile);
             }
@@ -176,6 +197,12 @@ void runMetric(int size, int step, bool ordered, MetricType metricType) {
             RedBlackTreeMetrics<RedBlackTree>().calcInsert(arr, size, step, outfile);
             SplayTreeMetrics<SplayTree>().calcInsert(arr, size, step, outfile);
             break;
+        case DELETE:
+            BinarySearchTreeMetrics<BinarySearchTree>().calcDelete(arr, size, step, outfile);
+            AVLTreeMetrics<AVLTree>().calcDelete(arr, size, step, outfile);
+            RedBlackTreeMetrics<RedBlackTree>().calcDelete(arr, size, step, outfile);
+            SplayTreeMetrics<SplayTree>().calcDelete(arr, size, step, outfile);
+            break;
         case FIND:
             BinarySearchTreeMetrics<BinarySearchTree>().calcFind(arr, size, step, outfile);
             AVLTreeMetrics<AVLTree>().calcFind(arr, size, step, outfile);
@@ -228,6 +255,8 @@ int main(int argc, char *argv[]) {
     map<string, tuple<bool, MetricType>> functionMap;
     functionMap["orderedInsert"] = make_tuple(true, INSERT);
     functionMap["randomInsert"] = make_tuple(false, INSERT);
+    functionMap["orderedDelete"] = make_tuple(true, DELETE);
+    functionMap["randomDelete"] = make_tuple(false, DELETE);
     functionMap["orderedFind"] = make_tuple(true, FIND);
     functionMap["randomFind"] = make_tuple(false, FIND);
 
