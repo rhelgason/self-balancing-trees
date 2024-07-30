@@ -17,7 +17,7 @@ This is the most basic binary tree. The key of each tree node is greater than al
   <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/avl_tree.png" alt="avl tree"/>
 </p>
 
-For every tree node in an AVL tree, the height of its two subtrees differ by no more than one. If this property ever becomes false during insertion or deletion, a series of rotations are performed to make the property true again. AVL trees are generally often slower during insertions and deletions because they perform ensure such strict balancing, but this guarantees optimal performance when searching for tree nodes.
+For every tree node in an AVL tree, the height of its two subtrees differ by no more than one. If this property ever becomes false during insertion or deletion, a series of rotations are performed to make the property true again. AVL trees are generally slower during insertions and deletions because they perform ensure such strict balancing, but this guarantees optimal performance when searching for tree nodes.
 
 ### [Red-Black Tree](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
 
@@ -36,7 +36,11 @@ Red-black trees are slightly faster during insertions and deletions than AVL tre
 
 ### [Splay Tree](https://en.wikipedia.org/wiki/Splay_tree)
 
-Splay trees balance themselves by moving recently accessed tree nodes nearer to the root. This allows splay trees to perform very well in cases where nodes need to be consistently accessed and suffer in cases where nodes are randomly accessed. For example, a splay tree could very effectively be used as a sort of caching algorithm.
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/splay_tree.png" alt="splay tree" width="300"/>
+</p>
+
+Splay trees balance themselves by repeatedly performing the action of "splaying", or moving a recently accessed node to the root of the tree. This means that the more recently accessed a node is, the closer to the root of the tree it should be. This allows splay trees to perform very well in cases where nodes need to be consistently accessed and suffer in cases where nodes are randomly accessed. For example, a splay tree could very effectively be used as a sort of caching algorithm.
 
 ### Time Complexities
 
