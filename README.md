@@ -61,11 +61,39 @@ Each of these tree implementations are binary trees, so the average time complex
 
 ### Ordered Insert: insert keys in numeric order
 
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/ordered_insert.png" alt="ordered insert graph" width="200"/>
+</p>
+
 ### Random Insert: insert keys in random order
+
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/random_insert.png" alt="random insert graph" width="200"/>
+</p>
 
 ### Ordered Find: find nodes while inserting keys in numeric order
 
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/ordered_find.png" alt="ordered find graph" width="200"/>
+</p>
+
 ### Random Find: find nodes while inserting keys in random order
+
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/random_find.png" alt="random find graph" width="200"/>
+</p>
+
+### Ordered Delete: delete nodes while inserting keys in numeric order
+
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/ordered_delete.png" alt="ordered delete graph" width="200"/>
+</p>
+
+### Random Delete: delete nodes while inserting keys in random order
+
+<p align="center">
+  <img src="https://github.com/rhelgason/self-balancing-trees/blob/main/img/random_delete.png" alt="random delete graph" width="200"/>
+</p>
 
 ## Usage
 The program provides a main entrypoint for running all of the metrics on each of the tree implementations. This can be run with `./bin/main` and a few optional flags:
